@@ -176,7 +176,7 @@ class _TransitoAppState extends State<TransitoApp> {
                ),
            ),
            SizedBox(width: 20),
-           Text("Clique qui", style: TextStyle(
+           Text("Clique aqui", style: TextStyle(
                fontFamily: "OpensSans",
                fontSize: 15,
                 color: Color(0xFFf0821e)
