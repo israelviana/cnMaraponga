@@ -1,4 +1,5 @@
 import 'package:app_transito/core/AppImages.dart';
+import 'package:app_transito/router.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -179,7 +180,9 @@ class _LoginState extends State<Login> {
   }
   Widget esqueceuSenha(){
     return InkWell(
-      onTap: (){},
+      onTap: (){
+        Navigator.pushNamed(context, esqueceuSenhaRoute);
+      },
       child: Row(
         children: [
           SizedBox(width: 20),
