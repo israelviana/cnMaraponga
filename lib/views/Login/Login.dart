@@ -157,7 +157,9 @@ class _LoginState extends State<Login> {
 
   Widget naoPossuiConta(){
     return InkWell(
-      onTap: (){},
+      onTap: (){
+        Navigator.pushNamed(context, cadastroRoute);
+      },
       child: Row(
         children: [
           Text("Ainda não possui uma conta? ",

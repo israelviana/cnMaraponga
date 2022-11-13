@@ -1,3 +1,4 @@
+import 'package:app_transito/views/Login/Cadastro.dart';
 import 'package:app_transito/views/Login/EsqueceuSenha.dart';
 import 'package:app_transito/views/Login/Login.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 
 const String loginRoute = '/login';
 const String esqueceuSenhaRoute = '/esqueceuSenha';
+const String cadastroRoute = '/cadastro';
 
 class RouterCn{
   mainRoutes(){
@@ -14,6 +16,8 @@ class RouterCn{
           return MaterialPageRoute(builder: (_) => Login());
         case esqueceuSenhaRoute:
           return MaterialPageRoute(builder: (_) => EsqueceuSenha());
+        case cadastroRoute:
+          return MaterialPageRoute(builder: (_) => Cadastro());
       }
     };
   }
