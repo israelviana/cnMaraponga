@@ -161,21 +161,18 @@ class _LoginState extends State<Login> {
         Navigator.pushNamed(context, cadastroRoute);
       },
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Ainda não possui uma conta? ",
+          Text("Cadastre-se ",
             style: TextStyle(
                 fontFamily: "OpensSans",
                 fontSize: 15,
-                color: Color(0xFFf0821e)
+                color: Color(0xFFf0821e),
+                fontWeight: FontWeight.bold,
+
             ),
           ),
-          SizedBox(width: 20),
-          Text("Clique aqui", style: TextStyle(
-              fontFamily: "OpensSans",
-              fontSize: 15,
-              color: Color(0xFFf0821e)
-          )
-          ),
+
         ],
       ),
     );
