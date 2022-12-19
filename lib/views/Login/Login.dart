@@ -42,7 +42,7 @@ class _LoginState extends State<Login> {
     return Form(
         key: _formkey,
         child: Padding(
-          padding: const EdgeInsets.only(top: 80),
+          padding: const EdgeInsets.only(top: 70),
           child: Column(
             children: [
               Text(
@@ -137,6 +137,7 @@ class _LoginState extends State<Login> {
         child: InkWell(
           onTap: (){
             _formkey.currentState.validate();
+            Navigator.pushNamed(context, inicialRoute);
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

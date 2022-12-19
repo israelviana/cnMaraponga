@@ -74,7 +74,7 @@ class _CadastroState extends State<Cadastro> {
             Padding(
               padding: const EdgeInsets.only(top: 13, bottom: 13),
               child: _InputForm(
-                  congregacaoController, 'Congregação', "CONGREGAÇÃO"),
+                  congregacaoController, 'CONGRECACAO', "CONGREGAÇÃO"),
             ),
             Text(
               "Nome: ",
@@ -98,7 +98,7 @@ class _CadastroState extends State<Cadastro> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 13, bottom: 15),
-              child: _InputForm(emailController, "E-mail", "E-mail"),
+              child: _InputForm(emailController, "EMAIL", "E-mail"),
             ),
             Text(
               "Senha",
@@ -122,7 +122,7 @@ class _CadastroState extends State<Cadastro> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 13, bottom: 15),
-              child: _InputForm(telefoneController, "Telefone", "Telefone"),
+              child: _InputForm(telefoneController, "TELEFONE", "Telefone"),
             ),
             Text(
               "Cargo",
@@ -193,6 +193,31 @@ class _CadastroState extends State<Cadastro> {
           case "SENHA":
             if (value.isEmpty) {
               return "Favor preencher o campo senha";
+            }
+            return null;
+          case "TELEFONE":
+            if (value.isEmpty){
+              return "Favor preencher o campo telefone";
+            }
+            return null;
+          case "NOME":
+            if (value.isEmpty){
+              return "Favor preencher o campo Nome";
+            }
+            return null;
+          case "CARGO":
+            if (value.isEmpty){
+              return "Favor preecher o cargo nome";
+            }
+            return null;
+          case "CPF":
+            if (value.isEmpty){
+              return "Favor preencher o campo CPF";
+            }
+            return null;
+          case "CONGRECACAO":
+            if (value.isEmpty){
+              return "Favor preencher o campo Congrecação";
             }
             return null;
         }
