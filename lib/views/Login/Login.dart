@@ -1,6 +1,8 @@
 import 'package:app_transito/core/AppImages.dart';
 import 'package:app_transito/router.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 class Login extends StatefulWidget {
   const Login({Key key}) : super(key: key);
@@ -199,4 +201,22 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+
+
+  void getRequisicao() async{
+    var url = Uri.parse('http://192.168.1.6:3000/sign');
+    String body = convert.jsonEncode({
+      "email": emailController,
+      "senha": senhaController
+    });
+    try{
+      var response = await http.post(url, body: body);
+      var jsonResponse = convert.jsonDecode(response.body);
+      print(jsonResponse);
+    }catch(err){
+      print(err);
+    }
+
+  }
+
 }

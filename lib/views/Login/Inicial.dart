@@ -14,9 +14,13 @@ class Inicial extends StatefulWidget{
   State<Inicial> createState() => _Inicial();
 }
 
+
 class _Inicial extends State<Inicial>{
   final _formKey = GlobalKey<FormState>();
 
+  @override
+  void initState(){
+  }
 
   @override
   Widget build(BuildContext context){
@@ -255,6 +259,5 @@ class _Inicial extends State<Inicial>{
       },
     );
   }
-
-
 }
+
