@@ -1,6 +1,6 @@
 import 'package:app_transito/core/AppImages.dart';
 import 'package:app_transito/router.dart';
-import 'package:app_transito/views/Login/CadastroEscalas.dart';
+import 'package:app_transito/views/Cadastros/CadastroEscalas.dart';
 import 'package:flutter/material.dart';
 
 enum TypeModalInitial{
@@ -17,38 +17,24 @@ class Inicial extends StatefulWidget{
 
 class _Inicial extends State<Inicial>{
   final _formKey = GlobalKey<FormState>();
-
-  @override
-  void initState(){
-  }
+  BuildContext contextModalEscalas;
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
       backgroundColor: Color(0xFF28282b),
-      body: Column(
-        children: [
-          Padding(padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 150),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Image.asset(AppImages.logoMini),
-                ],
-              )
-            ],
-          ),
-
-          ),
-          ButtonEscala(),
-          SizedBox(height: 30),
-          ButtonVeiculos(),
-          SizedBox(height: 30),
-          ButtonVoluntario()
-
-
-        ],
-
+      body: Padding(
+        padding: const EdgeInsets.only(left: 50, top: 50),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ButtonEscala(),
+            SizedBox(height: 30),
+            ButtonVeiculos(),
+            SizedBox(height: 30),
+            ButtonVoluntario()
+          ],
+        ),
       ),
     );
   }
@@ -139,7 +125,7 @@ class _Inicial extends State<Inicial>{
     );
   }
 
-  Widget ButtonEscalasOptions(String texto, String router){
+  Widget ButtonEscalasOptions(String texto, String router, BuildContext contextModal){
     return Container(
         width: 300,
         height: 60,
@@ -149,6 +135,7 @@ class _Inicial extends State<Inicial>{
         ),
         child: InkWell(
           onTap: (){
+            Navigator.pop(contextModal);
             Navigator.pushNamed(context, router);
           },
           child: Row(
@@ -244,9 +231,9 @@ class _Inicial extends State<Inicial>{
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  ButtonEscalasOptions("Cadastrar escalas", "cadastroVoluntario"),
+                                  ButtonEscalasOptions("Cadastrar escalas", cadastroEscalasRoute, context),
                                   SizedBox(height: 64),
-                                  ButtonEscalasOptions("Visualizar escalas", "cadastroVoluntario")
+                                  ButtonEscalasOptions("Visualizar escalas", "cadastroVoluntario", context)
                                 ],
                               ),
                             ],

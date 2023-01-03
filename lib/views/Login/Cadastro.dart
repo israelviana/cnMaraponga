@@ -31,12 +31,13 @@ class _CadastroState extends State<Cadastro> {
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
               child: Column(
                 children: [
+                  SizedBox(height: 30),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
+                      /*Image.asset(
                         AppImages.logoMini,
-                      ),
-                      SizedBox(width: 30),
+                      ),*/
                       Text("Cadastro",
                         style: TextStyle(
                             fontFamily: "OpensSans",
@@ -46,6 +47,7 @@ class _CadastroState extends State<Cadastro> {
                       ),
                     ],
                   ),
+                  SizedBox(height: 25),
                   formCadastro()
                 ],
               ),
@@ -64,7 +66,7 @@ class _CadastroState extends State<Cadastro> {
         child: Column(
           children: [
             Text(
-              "Congregação",
+              "Congregação:",
               style: TextStyle(
                 fontFamily: 'OpensSans',
                 fontSize: 20,
@@ -150,8 +152,7 @@ class _CadastroState extends State<Cadastro> {
             ),
             SizedBox(height: 20),
             ButtonConfirmar(),
-
-
+            SizedBox(height: 20)
           ],
         ),
       ),
@@ -181,7 +182,12 @@ class _CadastroState extends State<Cadastro> {
             )
         ),
         hintText: hintText,
-
+        hintStyle: TextStyle(
+          color: Colors.white70
+        ),
+      ),
+      style: TextStyle(
+          color: Colors.white70
       ),
       validator: (value) {
         switch (title) {
@@ -217,7 +223,7 @@ class _CadastroState extends State<Cadastro> {
             return null;
           case "CONGRECACAO":
             if (value.isEmpty){
-              return "Favor preencher o campo Congrecação";
+              return "Favor preencher o campo Congregação";
             }
             return null;
         }

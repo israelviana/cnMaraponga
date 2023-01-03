@@ -13,8 +13,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-       debugShowCheckedModeBanner: false,
-       title: 'App CN',
+      debugShowCheckedModeBanner: false,
+      title: 'App CN',
       onGenerateRoute: RouterCn().mainRoutes(),
       initialRoute: loginRoute,
     );

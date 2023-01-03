@@ -20,18 +20,18 @@ class _CadastroEscalastate extends State<CadastroEscalas>{
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 45, horizontal: 80),
+            padding: const EdgeInsets.symmetric(vertical: 45, horizontal: 40),
             child: Column(
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(
-                        AppImages.logoMini),
-                    SizedBox(width: 50),
-                    Text("Escalas",
+                    /*Image.asset(
+                        AppImages.logoMini),*/
+                    Text("Cadastro de Escalas",
                       style: TextStyle(
                           fontFamily: "OpensSans",
-                          fontSize: 25,
+                          fontSize: 28,
                           color: Color(0xFFf0821e)
                       ),
                     ),
@@ -57,7 +57,7 @@ Widget ButtonEscalas(){
               "Voluntário:",
               style: TextStyle(
                 fontFamily: 'OpenSans',
-                fontSize: 25,
+                fontSize: 24,
                 color: Color(0xFFf0821e),
               ),
             ),
@@ -69,7 +69,7 @@ Widget ButtonEscalas(){
               "Data: ",
               style: TextStyle(
                 fontFamily: 'OpenSans',
-                fontSize: 25,
+                fontSize: 24,
                 color: Color(0xFFf0821e)
               ),
             ),
@@ -81,7 +81,7 @@ Widget ButtonEscalas(){
               "Hora: ",
               style: TextStyle(
                 fontFamily: 'OpenSans',
-                fontSize: 25,
+                fontSize: 24,
                 color: Color(0xFFf0821e)
               ),
             ),
@@ -90,9 +90,7 @@ Widget ButtonEscalas(){
             child: _InputForm(horaController, 'HORA', 'hora'),
             ),
             SizedBox(height: 20),
-            ButtonConfirmar()
-
-            ,
+            ButtonConfirmar(),
           ],
         ),
       ),
@@ -122,7 +120,12 @@ Widget ButtonEscalas(){
             )
         ),
         hintText: hintText,
-
+        hintStyle: TextStyle(
+            color: Colors.white70
+        ),
+      ),
+      style: TextStyle(
+          color: Colors.white70
       ),
       validator: (value) {
         switch (title) {

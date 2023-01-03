@@ -28,12 +28,12 @@ class _LoginState extends State<Login> {
             Image.asset(AppImages.logoAplicativo),
             FormLogin(),
             SizedBox(height: 40),
-            Row(
+           /* Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Image.asset(AppImages.logoMini)
               ],
-            )
+            )*/
           ],
         ),
       ),
@@ -57,7 +57,7 @@ class _LoginState extends State<Login> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20, bottom: 20),
-                child: _InputForm(emailController, "EMAIL", "email@email.com"),
+                child: _InputForm(emailController, "EMAIL", "Digite seu email."),
               ),
               Text(
                 "Senha",
@@ -69,18 +69,14 @@ class _LoginState extends State<Login> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20, bottom: 20),
-                child: _InputForm(senhaController, "SENHA", "12345678"),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  esqueceuSenha(),
-                ],
+                child: _InputForm(senhaController, "SENHA", "Digite sua senha."),
               ),
               SizedBox(height: 20),
               ButtonConfirmar(),
               SizedBox(height: 30),
               naoPossuiConta(),
+              SizedBox(height: 15),
+              esqueceuSenha(),
             ],
           ),
         )
@@ -109,7 +105,12 @@ class _LoginState extends State<Login> {
             )
         ),
         hintText: hintText,
-
+        hintStyle: TextStyle(
+            color: Colors.white70
+        ),
+      ),
+      style: TextStyle(
+        color: Colors.white70
       ),
       validator: (value){
         switch (title){
@@ -168,10 +169,9 @@ class _LoginState extends State<Login> {
         children: [
           Text("Cadastre-se ",
             style: TextStyle(
-                fontFamily: "OpensSans",
                 fontSize: 15,
                 color: Color(0xFFf0821e),
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w400,
 
             ),
           ),
@@ -186,14 +186,13 @@ class _LoginState extends State<Login> {
         Navigator.pushNamed(context, esqueceuSenhaRoute);
       },
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(width: 20),
           Text(
             "Esqueceu a senha?",
             style: TextStyle(
-                fontFamily: "OpensSans",
                 fontSize: 15,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w400,
                 color: Color(0xFFf0821e)
             ),
           )
@@ -203,7 +202,7 @@ class _LoginState extends State<Login> {
   }
 
 
-  void getRequisicao() async{
+  void getRequisicao() async {
     var url = Uri.parse('http://192.168.1.6:3000/sign');
     String body = convert.jsonEncode({
       "email": emailController,
@@ -216,7 +215,6 @@ class _LoginState extends State<Login> {
     }catch(err){
       print(err);
     }
-
   }
 
 }

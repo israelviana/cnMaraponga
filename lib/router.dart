@@ -1,10 +1,10 @@
 import 'package:app_transito/views/Login/Cadastro.dart';
 import 'package:app_transito/views/Login/EsqueceuSenha.dart';
 import 'package:app_transito/views/Login/Login.dart';
-import 'package:app_transito/views/Login/CadastroEscalas.dart';
-import 'package:app_transito/views/Login/Inicial.dart';
-import 'package:app_transito/views/Login/CadastroVeiculos.dart';
-import 'package:app_transito/views/Login/CadastroVoluntario.dart';
+import 'package:app_transito/views/Cadastros/CadastroEscalas.dart';
+import 'package:app_transito/views/Home/Inicial.dart';
+import 'package:app_transito/views/Cadastros/CadastroVeiculos.dart';
+import 'package:app_transito/views/Cadastros/CadastroVoluntario.dart';
 import 'package:flutter/material.dart';
 
 
