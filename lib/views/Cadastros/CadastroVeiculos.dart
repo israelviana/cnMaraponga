@@ -26,25 +26,24 @@ class _CadastroVeiculos extends State<CadastroVeiculos>{
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 71),
+            padding: const EdgeInsets.symmetric(vertical: 45, horizontal: 40),
             child: Column(
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(
-                        AppImages.logoMini),
-                    SizedBox(width: 40),
-                    Text("Veículos",
+                    /*Image.asset(
+                        AppImages.logoMini),*/
+                    Text("Cadastro de Veículos",
                       style: TextStyle(
                           fontFamily: "OpensSans",
-                          fontSize: 25,
+                          fontSize: 28,
                           color: Color(0xFFf0821e)
                       ),
                     ),
                   ],
                 ),
                 ButtonVeiculos()
-
               ],
             ),
           ),
@@ -65,7 +64,7 @@ class _CadastroVeiculos extends State<CadastroVeiculos>{
               "Modelo:",
               style: TextStyle(
                 fontFamily: 'OpenSans',
-                fontSize: 25,
+                fontSize: 24,
                 color: Color(0xFFf0821e),
               ),
             ),
@@ -77,7 +76,7 @@ class _CadastroVeiculos extends State<CadastroVeiculos>{
               "Cor: ",
               style: TextStyle(
                   fontFamily: 'OpenSans',
-                  fontSize: 25,
+                  fontSize: 24,
                   color: Color(0xFFf0821e)
               ),
             ),
@@ -89,7 +88,7 @@ class _CadastroVeiculos extends State<CadastroVeiculos>{
               "Placa: ",
               style: TextStyle(
                   fontFamily: 'OpenSans',
-                  fontSize: 25,
+                  fontSize: 24,
                   color: Color(0xFFf0821e)
               ),
             ),
@@ -102,7 +101,7 @@ class _CadastroVeiculos extends State<CadastroVeiculos>{
               "Condutor: ",
               style: TextStyle(
                   fontFamily: 'OpenSans',
-                  fontSize: 25,
+                  fontSize: 24,
                   color: Color(0xFFf0821e)
               ),
             ),
@@ -115,7 +114,7 @@ class _CadastroVeiculos extends State<CadastroVeiculos>{
               "Telefone: ",
               style: TextStyle(
                   fontFamily: 'OpenSans',
-                  fontSize: 25,
+                  fontSize: 24,
                   color: Color(0xFFf0821e)
               ),
             ),
@@ -124,9 +123,7 @@ class _CadastroVeiculos extends State<CadastroVeiculos>{
               child: _InputForm(telefoneController, 'TELEFONE', 'Telefone'),
             ),
             SizedBox(height: 20),
-            ButtonConfirmar()
-
-            ,
+            ButtonConfirmar(),
           ],
         ),
       ),
@@ -156,33 +153,38 @@ class _CadastroVeiculos extends State<CadastroVeiculos>{
             )
         ),
         hintText: hintText,
-
+        hintStyle: TextStyle(
+            color: Colors.white70
+        ),
+      ),
+      style: TextStyle(
+          color: Colors.white70
       ),
       validator: (value) {
         switch (title) {
           case "MODELO":
             if (value.isEmpty) {
-              return "Favor preencher o campo modelo";
+              return "Favor preencher o campo modelo.";
             }
             return null;
           case "COR":
             if (value.isEmpty) {
-              return "Favor preencher o campo cor";
+              return "Favor preencher o campo cor.";
             }
             return null;
           case "PLACA":
             if (value.isEmpty){
-              return "Favor preencher o campo placa";
+              return "Favor preencher o campo placa.";
             }
             return null;
-          case "Condutor":
+          case "CONDUTOR":
             if (value.isEmpty){
-              return "Favor preencher o campo condutor";
+              return "Favor preencher o campo condutor.";
             }
             return null;
-          case "Telefone":
+          case "TELEFONE":
             if (value.isEmpty){
-              return "Favor preencher o campo telefone";
+              return "Favor preencher o campo telefone.";
             }
 
         }

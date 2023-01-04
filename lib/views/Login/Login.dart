@@ -28,7 +28,7 @@ class _LoginState extends State<Login> {
             Image.asset(AppImages.logoAplicativo),
             FormLogin(),
             SizedBox(height: 40),
-           /* Row(
+           /*Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Image.asset(AppImages.logoMini)

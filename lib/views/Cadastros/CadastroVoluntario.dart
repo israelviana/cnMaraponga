@@ -20,24 +20,25 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 71),
+              padding: const EdgeInsets.symmetric(vertical: 45, horizontal: 40),
               child: Column(
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
+                      /*Image.asset(
                           AppImages.logoMini),
-                      SizedBox(width: 40),
-                      Text("Voluntario",
+                      SizedBox(width: 40),*/
+                      Text("Cadastro de Voluntário",
                         style: TextStyle(
                             fontFamily: "OpensSans",
-                            fontSize: 25,
+                            fontSize: 28,
                             color: Color(0xFFf0821e)
                         ),
                       ),
                     ],
                   ),
-            ButtonVoluntario()
+                  ButtonVoluntario()
                 ],
               ),
             ),
@@ -58,7 +59,7 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
               "Nome:",
               style: TextStyle(
                 fontFamily: 'OpenSans',
-                fontSize: 25,
+                fontSize: 24,
                 color: Color(0xFFf0821e),
               ),
             ),
@@ -71,20 +72,20 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
               "CPF: ",
               style: TextStyle(
                   fontFamily: 'OpenSans',
-                  fontSize: 25,
+                  fontSize: 24,
                   color: Color(0xFFf0821e)
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20,bottom: 10),
-              child: _InputForm(cpfController, 'CPF', 'Cpf'),
+              child: _InputForm(cpfController, 'CPF', 'CPF'),
             ),
             SizedBox(height: 20),
             Text(
               "Telefone: ",
               style: TextStyle(
                   fontFamily: 'OpenSans',
-                  fontSize: 25,
+                  fontSize: 24,
                   color: Color(0xFFf0821e)
               ),
             ),
@@ -93,9 +94,7 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
               child: _InputForm(telefoneController, 'TELEFONE', 'Telefone'),
             ),
             SizedBox(height: 20),
-            ButtonConfirmar()
-
-            ,
+            ButtonConfirmar(),
           ],
         ),
       ),
@@ -125,23 +124,28 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
             )
         ),
         hintText: hintText,
-
+        hintStyle: TextStyle(
+            color: Colors.white70
+        ),
+      ),
+      style: TextStyle(
+          color: Colors.white70
       ),
       validator: (value) {
         switch (title) {
           case "NOME":
             if (value.isEmpty) {
-              return "Favor preencher o campo nome";
+              return "Favor preencher o campo nome.";
             }
             return null;
           case "CPF":
             if (value.isEmpty) {
-              return "Favor preencher o campo cpf";
+              return "Favor preencher o campo CPF.";
             }
             return null;
           case "TELEFONE":
             if (value.isEmpty){
-              return "Favor preencher o campo telefone";
+              return "Favor preencher o campo telefone.";
             }
 
         }

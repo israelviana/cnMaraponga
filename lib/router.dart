@@ -14,7 +14,7 @@ const String cadastroRoute = '/cadastro';
 const String inicialRoute = '/inicial';
 const String cadastroEscalasRoute = '/cadastroEscalas';
 const String cadastroVeiculosRoute = '/cadastroVeiculos';
-const String cadastroVoluntario = '/cadastroVoluntario';
+const String cadastroVoluntarioRoute = '/cadastroVoluntario';
 
 class RouterCn{
   mainRoutes(){
@@ -32,7 +32,7 @@ class RouterCn{
           return MaterialPageRoute(builder: (_) => CadastroEscalas());
         case cadastroVeiculosRoute:
           return MaterialPageRoute(builder: (_) => CadastroVeiculos());
-        case cadastroVoluntario:
+        case cadastroVoluntarioRoute:
           return MaterialPageRoute(builder: (_) => CadastroVoluntario());
       }
     };

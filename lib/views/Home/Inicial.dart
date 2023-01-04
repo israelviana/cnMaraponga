@@ -4,7 +4,7 @@ import 'package:app_transito/views/Cadastros/CadastroEscalas.dart';
 import 'package:flutter/material.dart';
 
 enum TypeModalInitial{
-  modalEscalas
+  modal
 }
 
 class Inicial extends StatefulWidget{
@@ -28,17 +28,17 @@ class _Inicial extends State<Inicial>{
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ButtonEscala(),
+            Button("Escalas", "escala"),
             SizedBox(height: 30),
-            ButtonVeiculos(),
+            Button("Veículos", "veiculo"),
             SizedBox(height: 30),
-            ButtonVoluntario()
+            Button("Voluntários", "voluntario"),
           ],
         ),
       ),
     );
   }
-  Widget ButtonEscala(){
+  Widget Button(String title,String type){
     return Container(
         width: 300,
         height: 60,
@@ -48,13 +48,13 @@ class _Inicial extends State<Inicial>{
         ),
         child: InkWell(
           onTap: (){
-            _modalEscalas(TypeModalInitial.modalEscalas);
+            _modal(TypeModalInitial.modal, type);
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Escalas",
+                title,
                 style: TextStyle(
                     fontFamily: "OpensSans",
                     fontSize: 15,
@@ -67,65 +67,7 @@ class _Inicial extends State<Inicial>{
     );
   }
 
-  Widget ButtonVeiculos(){
-    return Container(
-        width: 300,
-        height: 60,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-          color: Color(0xFFf0821e),
-        ),
-        child: InkWell(
-          onTap: (){
-            Navigator.pushNamed(context, cadastroVeiculosRoute);
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Veículos",
-                style: TextStyle(
-                    fontFamily: "OpensSans",
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold
-                ),
-              )
-            ],
-          ),
-        )
-    );
-  }
-
-  Widget ButtonVoluntario(){
-    return Container(
-        width: 300,
-        height: 60,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-          color: Color(0xFFf0821e),
-        ),
-        child: InkWell(
-          onTap: (){
-            Navigator.pushNamed(context, cadastroVoluntario);
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Volutários",
-                style: TextStyle(
-                    fontFamily: "OpensSans",
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold
-                ),
-              )
-            ],
-          ),
-        )
-    );
-  }
-
-  Widget ButtonEscalasOptions(String texto, String router, BuildContext contextModal){
+  Widget ButtonOptions(String texto, String router, BuildContext contextModal){
     return Container(
         width: 300,
         height: 60,
@@ -199,7 +141,7 @@ class _Inicial extends State<Inicial>{
     );
   }
 
-  _modalEscalas(TypeModalInitial modal) {
+  _modal(TypeModalInitial modal, String type) {
     String titleInitModal = "Opções";
     double heightModal = 344;
     double wightModal = 358;
@@ -231,9 +173,9 @@ class _Inicial extends State<Inicial>{
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  ButtonEscalasOptions("Cadastrar escalas", cadastroEscalasRoute, context),
+                                  type == "escala" ? ButtonOptions("Cadastrar escalas", cadastroEscalasRoute, context) : type == "veiculo" ? ButtonOptions("Cadastrar veículos", cadastroVeiculosRoute, context) : ButtonOptions("Cadastrar voluntário", cadastroVoluntarioRoute, context),
                                   SizedBox(height: 64),
-                                  ButtonEscalasOptions("Visualizar escalas", "cadastroVoluntario", context)
+                                  type == "escala" ? ButtonOptions("Visualizar escalas", cadastroEscalasRoute, context) : type == "veiculo" ? ButtonOptions("Visualizar veículos", cadastroVeiculosRoute, context) : ButtonOptions("Visualizar voluntário", cadastroVoluntarioRoute, context),
                                 ],
                               ),
                             ],
