@@ -175,7 +175,7 @@ class _Inicial extends State<Inicial>{
                                 children: [
                                   type == "escala" ? ButtonOptions("Cadastrar escalas", cadastroEscalasRoute, context) : type == "veiculo" ? ButtonOptions("Cadastrar veículos", cadastroVeiculosRoute, context) : ButtonOptions("Cadastrar voluntário", cadastroVoluntarioRoute, context),
                                   SizedBox(height: 64),
-                                  type == "escala" ? ButtonOptions("Visualizar escalas", cadastroEscalasRoute, context) : type == "veiculo" ? ButtonOptions("Visualizar veículos", cadastroVeiculosRoute, context) : ButtonOptions("Visualizar voluntário", cadastroVoluntarioRoute, context),
+                                  type == "escala" ? ButtonOptions("Visualizar escalas", escalasRoute, context) : type == "veiculo" ? ButtonOptions("Visualizar veículos", veiculosRoute, context) : ButtonOptions("Visualizar voluntário", voluntariosRoute, context),
                                 ],
                               ),
                             ],

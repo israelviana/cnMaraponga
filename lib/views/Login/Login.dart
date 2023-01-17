@@ -139,8 +139,9 @@ class _LoginState extends State<Login> {
         ),
         child: InkWell(
           onTap: (){
-            _formkey.currentState.validate();
             Navigator.pushNamed(context, inicialRoute);
+            if (_formkey.currentState.validate()){
+            }
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -201,20 +202,5 @@ class _LoginState extends State<Login> {
     );
   }
 
-
-  void getRequisicao() async {
-    var url = Uri.parse('http://192.168.1.6:3000/sign');
-    String body = convert.jsonEncode({
-      "email": emailController,
-      "senha": senhaController
-    });
-    try{
-      var response = await http.post(url, body: body);
-      var jsonResponse = convert.jsonDecode(response.body);
-      print(jsonResponse);
-    }catch(err){
-      print(err);
-    }
-  }
 
 }

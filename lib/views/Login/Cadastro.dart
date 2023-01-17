@@ -1,5 +1,7 @@
 import 'package:app_transito/core/AppImages.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 class Cadastro extends StatefulWidget {
   const Cadastro({Key key}) : super(key: key);
@@ -10,9 +12,8 @@ class Cadastro extends StatefulWidget {
 }
 
 class _CadastroState extends State<Cadastro> {
-  final congregacaoController = TextEditingController(text: '');
   final emailController = TextEditingController(text: '');
-  final senhaControler = TextEditingController(text: '');
+  final senhaController = TextEditingController(text: '');
   final nomeController = TextEditingController(text: '');
   final telefoneController = TextEditingController(text: '');
   final cargoController = TextEditingController(text: '');
@@ -73,11 +74,11 @@ class _CadastroState extends State<Cadastro> {
                 color: Color(0xFFf0821e),
               ),
             ),
-            Padding(
+            /*Padding(
               padding: const EdgeInsets.only(top: 13, bottom: 13),
               child: _InputForm(
                   congregacaoController, 'CONGRECACAO', "CONGREGAÇÃO"),
-            ),
+            ),*/
             Text(
               "Nome: ",
               style: TextStyle(
@@ -112,7 +113,7 @@ class _CadastroState extends State<Cadastro> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 13, bottom: 15),
-              child: _InputForm(senhaControler, "SENHA", "Senha"),
+              child: _InputForm(senhaController, "SENHA", "Senha"),
             ),
             Text(
               "Telefone",
@@ -221,11 +222,6 @@ class _CadastroState extends State<Cadastro> {
               return "Favor preencher o campo CPF";
             }
             return null;
-          case "CONGRECACAO":
-            if (value.isEmpty){
-              return "Favor preencher o campo Congregação";
-            }
-            return null;
         }
       },
     );
@@ -241,7 +237,8 @@ class _CadastroState extends State<Cadastro> {
         ),
         child: InkWell(
           onTap: () {
-            _formkey.currentState.validate();
+            if(_formkey.currentState.validate()){
+            }
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -259,6 +256,5 @@ class _CadastroState extends State<Cadastro> {
         )
     );
   }
-
-
 }
+
