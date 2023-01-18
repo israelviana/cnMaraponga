@@ -31,6 +31,8 @@ class _CadastroState extends State<Cadastro> {
 
   var _scaffoldKeyLogIn;
 
+  var contextModal;
+
   @override
   void initState() {
     _scaffoldKeyLogIn = GlobalKey<ScaffoldState>();
@@ -156,7 +158,7 @@ class _CadastroState extends State<Cadastro> {
               child: _InputForm(cpfController, "CPF", "CPF"),
             ),
             SizedBox(height: 20),
-            ButtonConfirmar(),
+            ButtonConfirmar("2"),
             SizedBox(height: 20)
           ],
         ),
@@ -231,7 +233,7 @@ class _CadastroState extends State<Cadastro> {
     );
   }
 
-  Widget ButtonConfirmar() {
+  Widget ButtonConfirmar(String type) {
     return Container(
         width: 200,
         height: 48,
@@ -241,11 +243,20 @@ class _CadastroState extends State<Cadastro> {
         ),
         child: InkWell(
           onTap: () {
-            if(_formkey.currentState.validate()){
-              _doSign();
-              ScalffoldMensage.messageSucessLogin(
-                  "Cadastro realizado com sucesso!", _scaffoldKeyLogIn);
-              Navigator.pop(context);
+            if(type == "1"){
+              if(_formkey.currentState.validate()){
+                _doSign();
+                Navigator.pop(contextModal);
+                ScalffoldMensage.messageSucessLogin(
+                    "Cadastro realizado com sucesso!", _scaffoldKeyLogIn);
+                Future.delayed(Duration(seconds: 2)).then((_) async {
+                  Navigator.pop(context);
+                });
+              }
+            }else if(type == "2"){
+              if(_formkey.currentState.validate()){
+                _modal();
+              }
             }
           },
           child: Row(
@@ -280,6 +291,101 @@ class _CadastroState extends State<Cadastro> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("LoginUserInfos", json.encode(user.toJson()));
     
+  }
+
+  _modal() {
+    String titleInitModal = "Opções";
+    double heightModal = 250;
+    double wightModal = 358;
+    showDialog(
+      context: context,
+      builder: (context) {
+        contextModal = context;
+        return WillPopScope(
+          onWillPop: () {
+            Navigator.pop(context);
+          },
+          child: StatefulBuilder(
+            builder: (context, setStateDeletModal) {
+              return Dialog(
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  backgroundColor: Colors.grey,
+                  insetPadding: EdgeInsets.all(8),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      Container(
+                          height: heightModal,
+                          width: wightModal,
+                          child: Column(
+                            children: [
+                              ContainerModalInitOne(context, titleInitModal),
+                              SizedBox(height: 30),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text("No atual momento só é possível \n cadastrar um usuário por vez!",
+                                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
+                                  SizedBox(height: 50),
+                                  ButtonConfirmar("1"),
+                                ],
+                              ),
+                            ],
+                          )),
+                    ],
+                  ));
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget ContainerModalInitOne(BuildContext context, String titleInit) {
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.only(
+            bottomLeft: const Radius.circular(0.0),
+            bottomRight: const Radius.circular(0.0),
+            topLeft: const Radius.circular(8.0),
+            topRight: const Radius.circular(8.0),
+          )
+      ),
+      height: 50,
+      child: Stack(
+        children: [
+          Positioned(
+              right: 20,
+              top: 12,
+              child: InkWell(
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: Container(
+                    child: Icon(
+                      Icons.close,
+                      color: Color(0xFFf0821e),
+                      size: 30,
+                    )),
+              )
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 17),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("Aviso!", style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xFFf0821e), fontSize: 14)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
 }
