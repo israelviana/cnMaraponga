@@ -1,7 +1,13 @@
+import 'dart:convert';
+
 import 'package:app_transito/core/AppImages.dart';
+import 'package:app_transito/models/user.dart';
+import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Cadastro extends StatefulWidget {
   const Cadastro({Key key}) : super(key: key);
@@ -11,7 +17,9 @@ class Cadastro extends StatefulWidget {
   State<Cadastro> createState() => _CadastroState();
 }
 
+
 class _CadastroState extends State<Cadastro> {
+
   final emailController = TextEditingController(text: '');
   final senhaController = TextEditingController(text: '');
   final nomeController = TextEditingController(text: '');
@@ -20,10 +28,19 @@ class _CadastroState extends State<Cadastro> {
   final cpfController = TextEditingController(text: '');
   final _formkey = GlobalKey<FormState>();
 
+
+  var _scaffoldKeyLogIn;
+
+  @override
+  void initState() {
+    _scaffoldKeyLogIn = GlobalKey<ScaffoldState>();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF28282b),
+      key: _scaffoldKeyLogIn,
       body:
       SingleChildScrollView(
         child: Column(
@@ -66,19 +83,6 @@ class _CadastroState extends State<Cadastro> {
         padding: const EdgeInsets.only(top: 4),
         child: Column(
           children: [
-            Text(
-              "Congregação:",
-              style: TextStyle(
-                fontFamily: 'OpensSans',
-                fontSize: 20,
-                color: Color(0xFFf0821e),
-              ),
-            ),
-            /*Padding(
-              padding: const EdgeInsets.only(top: 13, bottom: 13),
-              child: _InputForm(
-                  congregacaoController, 'CONGRECACAO', "CONGREGAÇÃO"),
-            ),*/
             Text(
               "Nome: ",
               style: TextStyle(
@@ -238,6 +242,10 @@ class _CadastroState extends State<Cadastro> {
         child: InkWell(
           onTap: () {
             if(_formkey.currentState.validate()){
+              _doSign();
+              ScalffoldMensage.messageSucessLogin(
+                  "Cadastro realizado com sucesso!", _scaffoldKeyLogIn);
+              Navigator.pop(context);
             }
           },
           child: Row(
@@ -256,5 +264,23 @@ class _CadastroState extends State<Cadastro> {
         )
     );
   }
+
+  void _doSign(){
+    User newUser = User(
+      name: nomeController.text,
+      mail: emailController.text,
+      password: senhaController.text,
+      keepOn: true
+    );
+    _saveUser(newUser);
+
+  }
+
+  void _saveUser(User user) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("LoginUserInfos", json.encode(user.toJson()));
+    
+  }
+
 }
 

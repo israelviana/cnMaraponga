@@ -1,8 +1,14 @@
+import 'dart:convert';
+
 import 'package:app_transito/core/AppImages.dart';
 import 'package:app_transito/router.dart';
+import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
+
+import '../../models/user.dart';
 
 class Login extends StatefulWidget {
   const Login({Key key}) : super(key: key);
@@ -11,16 +17,25 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
+
+
 class _LoginState extends State<Login> {
   final emailController = TextEditingController(text: '');
   final senhaController = TextEditingController(text: '');
   final _formkey = GlobalKey<FormState>();
+  var _scaffoldKeyLogIn;
+
+  @override
+  void initState() {
+    _scaffoldKeyLogIn = GlobalKey<ScaffoldState>();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFF28282b),
+      key: _scaffoldKeyLogIn,
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
         child: Column(
@@ -139,8 +154,8 @@ class _LoginState extends State<Login> {
         ),
         child: InkWell(
           onTap: (){
-            Navigator.pushNamed(context, inicialRoute);
             if (_formkey.currentState.validate()){
+              _doLogin();
             }
           },
           child: Row(
@@ -202,5 +217,31 @@ class _LoginState extends State<Login> {
     );
   }
 
+  _doLogin() async{
+    String mail = this.emailController.text;
+    String password = this.senhaController.text;
+
+    User savedUser = await _getSavedUser();
+
+    if(mail == savedUser.mail && password == savedUser.password){
+      ScalffoldMensage.messageSucessLogin(
+          "Seja bem-vindo!", _scaffoldKeyLogIn);
+      Future.delayed(Duration(milliseconds: 800)).then((_) async {
+        Navigator.pushNamed(context, inicialRoute);
+      });
+    }else{
+      ScalffoldMensage.messageErrorLogin(
+          "Email ou Senha incorretos!", _scaffoldKeyLogIn);
+    }
+  }
+
+  Future<User> _getSavedUser() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String jsonUser = prefs.getString("LoginUserInfos");
+    Map<String, dynamic> mapUser = json.decode(jsonUser);
+    User user = User.fromJson(mapUser);
+
+    return user;
+  }
 
 }
