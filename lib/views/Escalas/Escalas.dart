@@ -1,3 +1,4 @@
+import 'package:app_transito/models/escala.dart';
 import 'package:app_transito/views/Escalas/Widgets/EscalasList.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,8 @@ class Escalas extends StatefulWidget {
 
 
 class _EscalasState extends State<Escalas> {
-
+  List<Escala> _escalas = [];
+  Escala e = new Escala();
 
   @override
   void initState(){
@@ -18,6 +20,9 @@ class _EscalasState extends State<Escalas> {
 
   @override
   Widget build(BuildContext context) {
+    Map data = ModalRoute.of(context).settings.arguments;
+    _escalas = data["listaEscala"];
+
     return Scaffold(
       backgroundColor: Color(0xFF28282b),
       body: SingleChildScrollView(
@@ -31,7 +36,12 @@ class _EscalasState extends State<Escalas> {
                  color: Color(0xFFf0821e)
              )),
              SizedBox(height: 20),
-             EscalasList(voluntario: "EU", data: "eu", descricao: "eu", hora: "eu"),
+             ListView.separated(
+                 itemCount: _escalas.length,
+                 itemBuilder: (BuildContext context, int index){
+                   return EscalasList(voluntario: _escalas[2], data: _escalas[1], hora: _escalas[0]);
+                 }
+             ),
            ],
           ),
         ),

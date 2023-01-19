@@ -5,12 +5,11 @@ class EscalasList extends StatelessWidget {
       {Key key,
         @required this.voluntario,
         @required this.data,
-        @required this.descricao,
         @required this.hora,
       })
       : super(key: key);
 
-  final voluntario, data, descricao, hora;
+  final voluntario, data, hora;
 
   @override
   Widget build(BuildContext context) {
@@ -105,13 +104,7 @@ class EscalasList extends StatelessWidget {
                                     fontFamily: "Roboto",
                                     fontSize: 14,
                                     fontWeight: FontWeight.w700)),
-                            TextSpan(
-                              text: descricao,
-                              style: TextStyle(
-                                  fontFamily: "OpensSans",
-                                  fontSize: 14,
-                                  color: Color(0xFFf0821e)),
-                            )],
+                            ],
                         ),
                       ),
                     ]))));

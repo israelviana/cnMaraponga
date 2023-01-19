@@ -1,4 +1,6 @@
 import 'package:app_transito/core/AppImages.dart';
+import 'package:app_transito/models/escala.dart';
+import 'package:app_transito/router.dart';
 import 'package:flutter/material.dart';
 
 class CadastroEscalas extends StatefulWidget {
@@ -13,6 +15,8 @@ class _CadastroEscalastate extends State<CadastroEscalas>{
   final escalaControler = TextEditingController(text: '');
   final dataController = TextEditingController(text: '');
   final horaController = TextEditingController(text: '');
+
+  List<Escala> escalas = [];
 
   Widget build(BuildContext context){
     return Scaffold(
@@ -158,7 +162,17 @@ Widget ButtonEscalas(){
       ),
       child: InkWell(
         onTap: (){
-          _formkey.currentState.validate();
+          if(_formkey.currentState.validate()){
+            /*
+            da erro
+            escalas.add(Escala(
+                data: dataController.text,
+                hora: horaController.text,
+                voluntario: escalaControler.text
+            ));*/
+            print(escalas);
+            /*Navigator.pushNamed(context, escalasRoute, arguments: {"listaEscala": escalas});*/
+          }
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

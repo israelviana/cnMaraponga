@@ -16,9 +16,6 @@ class _CadastroVeiculos extends State<CadastroVeiculos>{
   final condutorController = TextEditingController(text: '');
   final telefoneController = TextEditingController(text: '');
 
-
-
-
   Widget build(BuildContext context){
     return Scaffold(
       backgroundColor: Color(0xFF28282b),
