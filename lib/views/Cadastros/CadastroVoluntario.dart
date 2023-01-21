@@ -1,5 +1,8 @@
 import 'package:app_transito/core/AppImages.dart';
+import 'package:app_transito/models/voluntario.dart';
+import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CadastroVoluntario extends StatefulWidget{
   const CadastroVoluntario({Key key}) : super(key: key);
@@ -13,8 +16,20 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
   final cpfController = TextEditingController(text: '');
   final telefoneController = TextEditingController(text: '');
 
+  var listVoluntario;
+
+  var _scaffoldKeyLogIn;
+
+
+  @override
+  void initState(){
+    _getVoluntarioList();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKeyLogIn,
       backgroundColor: Color(0xFF28282b),
       body: SingleChildScrollView(
         child: Column(
@@ -163,7 +178,9 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
       ),
       child: InkWell(
         onTap: (){
-          _formkey.currentState.validate();
+          if (_formkey.currentState.validate()) {
+            _adicionarList();
+          }
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -180,6 +197,50 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
         ),
       ),
     );
+  }
+
+  void _adicionarList(){
+    Voluntario voluntario = new Voluntario(
+        telefone: telefoneController.text,
+        cpf: cpfController.text,
+        nome: nomeController.text
+    );
+
+    listVoluntario.add(voluntario);
+    _saveVoluntarioList(listVoluntario);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        dismissDirection: DismissDirection.down,
+        elevation: 5,
+        behavior: SnackBarBehavior.floating,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(
+                child: Text("Voluntário cadastrado com sucesso!!"))
+          ],
+        ),
+        backgroundColor:  Color(0xFF4FBD2D),
+      ),
+    );
+    Future.delayed(Duration(milliseconds: 800)).then((_) async {
+      Navigator.pop(context);
+    });
+  }
+
+  Future<void> _saveVoluntarioList(List<Voluntario> voluntarioList) async{
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setVoluntarioList("listVoluntario", voluntarioList);
+  }
+
+  _getVoluntarioList() async {
+    listVoluntario = await loadVoluntarioList();
+  }
+
+  Future<List<Voluntario>> loadVoluntarioList() async{
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getVoluntarioList("listVoluntario") ?? [];
   }
 
 

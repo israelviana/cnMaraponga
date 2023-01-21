@@ -1,6 +1,9 @@
-import 'package:app_transito/models/escala.dart';
-import 'package:app_transito/views/Escalas/Widgets/EscalasList.dart';
+
+import 'package:app_transito/views/Escalas/Widgets/EscalasListWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../models/escala.dart';
 
 class Escalas extends StatefulWidget {
   const Escalas({Key key}) : super(key: key);
@@ -11,41 +14,58 @@ class Escalas extends StatefulWidget {
 
 
 class _EscalasState extends State<Escalas> {
-  List<Escala> _escalas = [];
-  Escala e = new Escala();
+  Future requisitionEscalas;
+
+
 
   @override
   void initState(){
+   requisitionEscalas = loadEscalaList();
+  }
+
+
+  Future<List<Escala>> loadEscalaList() async{
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getEscalaList("listEscala");
   }
 
   @override
   Widget build(BuildContext context) {
-    Map data = ModalRoute.of(context).settings.arguments;
-    _escalas = data["listaEscala"];
-
     return Scaffold(
       backgroundColor: Color(0xFF28282b),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 24),
-          child: Column(
-           children: [
-             Text("ESCALAS", style: TextStyle(
-                 fontFamily: "OpensSans",
-                 fontSize: 40,
-                 color: Color(0xFFf0821e)
-             )),
-             SizedBox(height: 20),
-             ListView.separated(
-                 itemCount: _escalas.length,
-                 itemBuilder: (BuildContext context, int index){
-                   return EscalasList(voluntario: _escalas[2], data: _escalas[1], hora: _escalas[0]);
-                 }
-             ),
-           ],
-          ),
-        ),
-      ),
+      body: FutureBuilder(
+        future: requisitionEscalas,
+          builder: (context, snapshot){
+            if(snapshot.hasData && snapshot.connectionState == ConnectionState.done){
+              List<Escala> escala = <Escala>[];
+              escala = snapshot.data;
+              return Column(
+                children: [
+                  SizedBox(height: 20),
+                  Text("ESCALAS", style: TextStyle(
+                      fontFamily: "OpensSans",
+                      fontSize: 40,
+                      color: Color(0xFFf0821e)
+                  )),
+                  SizedBox(height: 20),
+                  Column(
+                   children: List.generate(escala.length, (index) {
+                     return EscalasListWidget(voluntario: escala[index].voluntario, data: escala[index].data, hora: escala[index].hora);
+                   }),
+                  ),
+                ],
+              );
+            }else if(!snapshot.hasData && snapshot.connectionState == ConnectionState.done){
+              return Center(child: Text("Não possui dados de escalas!!!", style: TextStyle(
+                  fontFamily: "OpensSans",
+                  fontSize: 20,
+                  color: Color(0xFFf0821e)
+              ),));
+            }else{
+              return CircularProgressIndicator();
+            }
+          }
+      )
     );
   }
 }

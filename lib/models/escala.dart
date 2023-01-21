@@ -1,9 +1,18 @@
+class EscalasList{
+  List<Escala> listEscala;
 
-import 'package:objectbox/objectbox.dart';
+  EscalasList({this.listEscala});
 
-@Entity()
+  EscalasList.fromJson(List<dynamic> json){
+    listEscala = [];
+    json.forEach((element) {
+      listEscala.add(new Escala.fromJson(element));
+    });
+  }
+}
+
+
 class Escala{
-  int id = 0;
   String voluntario;
   String data;
   String hora;
@@ -11,9 +20,9 @@ class Escala{
   Escala({this.voluntario, this.data, this.hora});
 
   Escala.fromJson(Map<String, dynamic> json) {
-    voluntario = json['voluntario'];
-    data = json['data'];
-    hora = json['hora'];
+    voluntario = json['voluntario'] ?? "";
+    data = json['data'] ?? "";
+    hora = json['hora'] ?? "";
   }
 
   Map<String, dynamic> toJson() {

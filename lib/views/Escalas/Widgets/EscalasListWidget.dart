@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class EscalasList extends StatelessWidget {
-  EscalasList(
+class EscalasListWidget extends StatelessWidget {
+  EscalasListWidget(
       {Key key,
         @required this.voluntario,
         @required this.data,
@@ -94,19 +94,6 @@ class EscalasList extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: size.height * 0.01),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(color: Colors.black),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Descrição: ',
-                                style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700)),
-                            ],
-                        ),
-                      ),
                     ]))));
   }
 }
