@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:app_transito/views/Escalas/Widgets/EscalasListWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +17,7 @@ class Escalas extends StatefulWidget {
 
 class _EscalasState extends State<Escalas> {
   Future requisitionEscalas;
-
+  List<Escala> escala = <Escala>[];
 
 
   @override
@@ -25,8 +27,10 @@ class _EscalasState extends State<Escalas> {
 
 
   Future<List<Escala>> loadEscalaList() async{
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getEscalaList("listEscala");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String jsonEscala = prefs.getString("listEscala");
+    escala = json.decode(jsonEscala).map((i) => Escala.fromJson(i)).toList();
+    return escala;
   }
 
   @override
@@ -37,7 +41,6 @@ class _EscalasState extends State<Escalas> {
         future: requisitionEscalas,
           builder: (context, snapshot){
             if(snapshot.hasData && snapshot.connectionState == ConnectionState.done){
-              List<Escala> escala = <Escala>[];
               escala = snapshot.data;
               return Column(
                 children: [

@@ -1,15 +1,24 @@
-class EscalasList{
+/*class EscalasList{
   List<Escala> listEscala;
 
   EscalasList({this.listEscala});
 
-  EscalasList.fromJson(List<dynamic> json){
+  EscalasList.fromJson(Map<String, dynamic> json){
     listEscala = [];
-    json.forEach((element) {
-      listEscala.add(new Escala.fromJson(element));
-    });
+    if(json["Escala"] != null){
+      json["Escala"].forEach((v) {
+        listEscala.add(new Escala.fromJson(v));
+      });
+    }
   }
-}
+
+  Map<String, dynamic> toJson(){
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['Escala'] = this.listEscala.map((e) => e.toJson()).toList();
+    return data;
+  }
+
+}*/
 
 
 class Escala{
@@ -19,17 +28,20 @@ class Escala{
 
   Escala({this.voluntario, this.data, this.hora});
 
-  Escala.fromJson(Map<String, dynamic> json) {
-    voluntario = json['voluntario'] ?? "";
-    data = json['data'] ?? "";
-    hora = json['hora'] ?? "";
+  factory Escala.fromJson(Map<String, dynamic> json) {
+
+   return Escala(
+       voluntario: json['voluntario'],
+       data: json['data'],
+       hora: json['hora'],
+   );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['voluntario'] = this.voluntario;
-    data['data'] = this.data;
-    data['hora'] = this.hora;
-    return data;
+    return {
+      'voluntario': voluntario,
+      'data': data,
+      'hora': hora
+    };
   }
 }

@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:app_transito/models/escala.dart';
 import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +19,7 @@ class _CadastroEscalastate extends State<CadastroEscalas>{
   final dataController = TextEditingController(text: '');
   final horaController = TextEditingController(text: '');
 
-  var listEscala;
+  List<Escala> listEscala = <Escala>[];
   var _scaffoldKeyLogIn;
 
   @override
@@ -207,8 +209,9 @@ Widget ButtonEscalas(){
   }
 
   Future<void> _saveEscalaList(List<Escala> escalaList) async{
+    String jsonEscala = json.encode(escalaList);
     final prefs = await SharedPreferences.getInstance();
-    prefs.setEscalaList("listEscala", escalaList);
+    prefs.setString("listEscala", jsonEscala);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         dismissDirection: DismissDirection.down,
@@ -234,8 +237,10 @@ Widget ButtonEscalas(){
   }
 
   Future<List<Escala>> loadEscalaList() async{
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getEscalaList("listEscala") ?? [];
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String jsonEscala = prefs.getString("listEscala");
+    listEscala = json.decode(jsonEscala).map((i) => Escala.fromJson(i)).toList();
+    return listEscala;
   }
 }
 

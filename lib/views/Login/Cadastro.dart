@@ -290,7 +290,6 @@ class _CadastroState extends State<Cadastro> {
   void _saveUser(User user) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("LoginUserInfos", json.encode(user.toJson()));
-    
   }
 
   _modal() {
