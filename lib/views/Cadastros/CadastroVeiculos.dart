@@ -4,6 +4,8 @@ import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../core/AppImages.dart';
+
 class CadastroVeiculos extends StatefulWidget{
   const CadastroVeiculos({Key key}) : super(key: key);
 
@@ -37,14 +39,14 @@ class _CadastroVeiculos extends State<CadastroVeiculos>{
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 45, horizontal: 40),
+            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
             child: Column(
               children: [
+                Image.asset(AppImages.logoAplicativo),
+                SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    /*Image.asset(
-                        AppImages.logoMini),*/
                     Text("Cadastro de Veículos",
                       style: TextStyle(
                           fontFamily: "OpensSans",

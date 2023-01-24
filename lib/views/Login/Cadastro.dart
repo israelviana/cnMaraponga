@@ -1,6 +1,6 @@
 import 'dart:convert';
-
-import 'package:app_transito/core/AppImages.dart';
+import 'package:flutter/services.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:app_transito/models/user.dart';
 import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +22,7 @@ class _CadastroState extends State<Cadastro> {
 
   final emailController = TextEditingController(text: '');
   final senhaController = TextEditingController(text: '');
+  final confirmeSenhaController = TextEditingController(text: '');
   final nomeController = TextEditingController(text: '');
   final telefoneController = TextEditingController(text: '');
   final cargoController = TextEditingController(text: '');
@@ -122,6 +123,18 @@ class _CadastroState extends State<Cadastro> {
               child: _InputForm(senhaController, "SENHA", "Senha"),
             ),
             Text(
+              "Confirme Senha",
+              style: TextStyle(
+                fontFamily: "OpenSans",
+                fontSize: 20,
+                color: Color(0xFFf0821e),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 13, bottom: 15),
+              child: _InputForm(confirmeSenhaController, "confirmeSenha", "Confirme a Senha"),
+            ),
+            Text(
               "Telefone",
               style: TextStyle(
                 fontFamily: "OpenSans",
@@ -208,6 +221,11 @@ class _CadastroState extends State<Cadastro> {
               return "Favor preencher o campo senha";
             }
             return null;
+          case "confirmeSenha":
+            if (value.isEmpty) {
+              return "Favor preencher o campo senha";
+            }
+            return null;
           case "TELEFONE":
             if (value.isEmpty){
               return "Favor preencher o campo telefone";
@@ -230,7 +248,25 @@ class _CadastroState extends State<Cadastro> {
             return null;
         }
       },
+      inputFormatters: [_MaskTextInputFormatter(title: title)],
     );
+  }
+
+  dynamic _MaskTextInputFormatter({title = ""}) {
+    switch (title) {
+      case "CPF":
+        return MaskTextInputFormatter(
+            initialText: cpfController.text,
+            mask: '###.###.###-##',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy);
+      case "TELEFONE":
+        return MaskTextInputFormatter(
+            initialText: telefoneController.text,
+            mask: '(##) #####-####',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy);
+    }
   }
 
   Widget ButtonConfirmar(String type) {
@@ -245,13 +281,19 @@ class _CadastroState extends State<Cadastro> {
           onTap: () {
             if(type == "1"){
               if(_formkey.currentState.validate()){
-                _doSign();
-                Navigator.pop(contextModal);
-                ScalffoldMensage.messageSucessLogin(
-                    "Cadastro realizado com sucesso!", _scaffoldKeyLogIn);
-                Future.delayed(Duration(seconds: 2)).then((_) async {
-                  Navigator.pop(context);
-                });
+                if(senhaController.text != confirmeSenhaController.text){
+                  Navigator.pop(contextModal);
+                  ScalffoldMensage.messageErrorLogin(
+                      "SENHAS DIFERENTES!", _scaffoldKeyLogIn);
+                }else{
+                  _doSign();
+                  Navigator.pop(contextModal);
+                  ScalffoldMensage.messageSucessLogin(
+                      "Cadastro realizado com sucesso!", _scaffoldKeyLogIn);
+                  Future.delayed(Duration(seconds: 2)).then((_) async {
+                    Navigator.pop(context);
+                  });
+                }
               }
             }else if(type == "2"){
               if(_formkey.currentState.validate()){

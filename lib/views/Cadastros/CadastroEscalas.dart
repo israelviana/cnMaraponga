@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 
+import 'package:app_transito/core/AppImages.dart';
 import 'package:app_transito/models/escala.dart';
 import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
@@ -19,12 +20,13 @@ class _CadastroEscalastate extends State<CadastroEscalas>{
   final dataController = TextEditingController(text: '');
   final horaController = TextEditingController(text: '');
 
-  List<Escala> listEscala = <Escala>[];
+  EscalasList escalaObject = new EscalasList();
+  List<Escala> listEscala = [];
   var _scaffoldKeyLogIn;
 
   @override
   void initState(){
-    _getEscalaList();
+  /*  _getEscalaList();*/
   }
 
   @override
@@ -36,14 +38,14 @@ class _CadastroEscalastate extends State<CadastroEscalas>{
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 45, horizontal: 40),
+              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
               child: Column(
                 children: [
+                  Image.asset(AppImages.logoAplicativo),
+                  SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      /*Image.asset(
-                          AppImages.logoMini),*/
                       Text("Cadastro de Escalas",
                         style: TextStyle(
                             fontFamily: "OpensSans",
@@ -203,16 +205,27 @@ Widget ButtonEscalas(){
         data: dataController.text
     );
 
+
     listEscala.add(escala);
+    print(listEscala);
     _saveEscalaList(listEscala);
 
   }
 
   Future<void> _saveEscalaList(List<Escala> escalaList) async{
-    String jsonEscala = json.encode(escalaList);
+    /*escalaObject.listEscala = escalaList;*/
+    String jsonEscala = jsonEncode(listEscala);
+    print(jsonEscala);
     final prefs = await SharedPreferences.getInstance();
     prefs.setString("listEscala", jsonEscala);
-    ScaffoldMessenger.of(context).showSnackBar(
+
+
+
+
+
+
+
+    /*ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         dismissDirection: DismissDirection.down,
         elevation: 5,
@@ -229,19 +242,24 @@ Widget ButtonEscalas(){
     );
     Future.delayed(Duration(milliseconds: 800)).then((_) async {
       Navigator.pop(context);
-    });
+    });*/
   }
 
-  _getEscalaList() async {
+  /*_getEscalaList() async {
    listEscala = await loadEscalaList();
   }
 
-  Future<List<Escala>> loadEscalaList() async{
+    Future<List<Escala>> loadEscalaList() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String jsonEscala = prefs.getString("listEscala");
-    listEscala = json.decode(jsonEscala).map((i) => Escala.fromJson(i)).toList();
+    String jsonEscalas = prefs.getString("listEscala");
+
+    List<Escala> mylist = jsonDecode(jsonEscalas as Map<String, dynamic>).map((i) => Escala.fromJson(i)).toList();
+    print(mylist);
+
+
+
     return listEscala;
-  }
+  }*/
 }
 
 

@@ -35,15 +35,14 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 45, horizontal: 40),
+              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
               child: Column(
                 children: [
+                  Image.asset(AppImages.logoAplicativo),
+                  SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      /*Image.asset(
-                          AppImages.logoMini),
-                      SizedBox(width: 40),*/
                       Text("Cadastro de Voluntário",
                         style: TextStyle(
                             fontFamily: "OpensSans",

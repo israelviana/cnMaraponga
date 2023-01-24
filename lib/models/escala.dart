@@ -1,5 +1,5 @@
-/*class EscalasList{
-  List<Escala> listEscala;
+class EscalasList{
+  List<Escala> listEscala = <Escala>[];
 
   EscalasList({this.listEscala});
 
@@ -18,7 +18,7 @@
     return data;
   }
 
-}*/
+}
 
 
 class Escala{
@@ -28,20 +28,17 @@ class Escala{
 
   Escala({this.voluntario, this.data, this.hora});
 
-  factory Escala.fromJson(Map<String, dynamic> json) {
-
-   return Escala(
-       voluntario: json['voluntario'],
-       data: json['data'],
-       hora: json['hora'],
-   );
+  Escala.fromJson(Map<String, dynamic> json) {
+    voluntario = json['voluntario'];
+    data = json['data'] ?? "";
+    hora = json['hora'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'voluntario': voluntario,
-      'data': data,
-      'hora': hora
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['voluntario'] = this.voluntario;
+    data['data'] = this.data;
+    data['hora'] = this.hora;
+    return data;
   }
 }

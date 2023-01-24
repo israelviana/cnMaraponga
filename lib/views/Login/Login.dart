@@ -36,20 +36,23 @@ class _LoginState extends State<Login> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFF28282b),
       key: _scaffoldKeyLogIn,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
-        child: Column(
-          children: [
-            Image.asset(AppImages.logoAplicativo),
-            FormLogin(),
-            SizedBox(height: 40),
-           /*Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Image.asset(AppImages.logoMini)
-              ],
-            )*/
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          
+          padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
+          child: Column(
+            children: [
+              Image.asset(AppImages.logoAplicativo),
+              FormLogin(),
+              SizedBox(height: 40),
+             /*Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Image.asset(AppImages.logoMini)
+                ],
+              )*/
+            ],
+          ),
         ),
       ),
     );

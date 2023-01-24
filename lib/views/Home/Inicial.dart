@@ -24,15 +24,24 @@ class _Inicial extends State<Inicial>{
     return Scaffold(
       backgroundColor: Color(0xFF28282b),
       body: Padding(
-        padding: const EdgeInsets.only(left: 50, top: 50),
+        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Button("Escalas", "escala"),
-            SizedBox(height: 30),
-            Button("Veículos", "veiculo"),
-            SizedBox(height: 30),
-            Button("Voluntários", "voluntario"),
+            Image.asset(AppImages.logoAplicativo),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 100),
+              child: Container(
+                child: Column(
+                  children: [
+                    Button("Escalas", "escala"),
+                    SizedBox(height: 30),
+                    Button("Veículos", "veiculo"),
+                    SizedBox(height: 30),
+                    Button("Voluntários", "voluntario"),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),
