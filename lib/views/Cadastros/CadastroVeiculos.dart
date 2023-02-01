@@ -1,7 +1,10 @@
 
+import 'dart:convert';
+
 import 'package:app_transito/models/veiculos.dart';
 import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/AppImages.dart';
@@ -21,13 +24,13 @@ class _CadastroVeiculos extends State<CadastroVeiculos>{
   final condutorController = TextEditingController(text: '');
   final telefoneController = TextEditingController(text: '');
 
-  var listVeiculo;
+  List<Veiculo> listVeiculo = [];
 
   var _scaffoldKeyLogIn;
 
   @override
   void initState(){
-    _getVeiculoList();
+    _loadVeiculoList();
   }
 
   @override
@@ -199,10 +202,27 @@ class _CadastroVeiculos extends State<CadastroVeiculos>{
             if (value.isEmpty){
               return "Favor preencher o campo telefone.";
             }
-
         }
       },
+        inputFormatters: [_MaskTextInputFormatter(title: title)]
     );
+  }
+
+  dynamic _MaskTextInputFormatter({title = ""}) {
+    switch (title) {
+      case "PLACA":
+        return MaskTextInputFormatter(
+            initialText: placaController.text,
+            mask: '###-####',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy);
+      case "TELEFONE":
+        return MaskTextInputFormatter(
+            initialText: telefoneController.text,
+            mask: '(##) #####-####',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy);
+    }
   }
 
   Widget ButtonConfirmar(){
@@ -248,6 +268,15 @@ class _CadastroVeiculos extends State<CadastroVeiculos>{
     listVeiculo.add(veiculo);
     _saveVeiculoList(listVeiculo);
 
+
+  }
+
+  Future<void> _saveVeiculoList(List<Veiculo> listVeiculo) async{
+    String veiculosString = jsonEncode(listVeiculo);
+
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('veiculosKey', veiculosString);
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         dismissDirection: DismissDirection.down,
@@ -268,20 +297,15 @@ class _CadastroVeiculos extends State<CadastroVeiculos>{
     });
   }
 
-  Future<void> _saveVeiculoList(List<Veiculo> veiculoList) async{
+
+   _loadVeiculoList() async{
     final prefs = await SharedPreferences.getInstance();
-    prefs.setVeiculoList("listVeiculo", veiculoList);
+    final listVeiculos = prefs.getString('veiculosKey');
+
+    if (listVeiculos != null){
+      List<dynamic> objectVeiculos = jsonDecode(listVeiculos);
+      listVeiculo = objectVeiculos.map((e) => Veiculo.fromJson(e)).toList();
+    }
   }
-
-  _getVeiculoList() async {
-    listVeiculo = await loadVeiculoList();
-  }
-
-  Future<List<Veiculo>> loadVeiculoList() async{
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getVeiculoList("listVeiculo") ?? [];
-  }
-
-
 
 }

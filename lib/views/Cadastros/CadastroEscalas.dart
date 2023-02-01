@@ -5,6 +5,7 @@ import 'package:app_transito/core/AppImages.dart';
 import 'package:app_transito/models/escala.dart';
 import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CadastroEscalas extends StatefulWidget {
@@ -20,13 +21,14 @@ class _CadastroEscalastate extends State<CadastroEscalas>{
   final dataController = TextEditingController(text: '');
   final horaController = TextEditingController(text: '');
 
-  EscalasList escalaObject = new EscalasList();
-  List<Escala> listEscala = [];
+  List<Escala> listaDeEscala = [];
+  
   var _scaffoldKeyLogIn;
 
   @override
   void initState(){
-  /*  _getEscalaList();*/
+    super.initState();
+    _loadListEscala();
   }
 
   @override
@@ -164,7 +166,25 @@ Widget ButtonEscalas(){
             }
         }
       },
+        inputFormatters: [_MaskTextInputFormatter(title: title)]
     );
+  }
+
+  dynamic _MaskTextInputFormatter({title = ""}) {
+    switch (title) {
+      case "DATA":
+        return MaskTextInputFormatter(
+            initialText: dataController.text,
+            mask: '##/##/####',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy);
+      case "HORA":
+        return MaskTextInputFormatter(
+            initialText: horaController.text,
+            mask: '##:##',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy);
+    }
   }
 
   Widget ButtonConfirmar(){
@@ -198,34 +218,27 @@ Widget ButtonEscalas(){
     );
   }
 
-  void _adicionarList(){
+  void _adicionarList() async{
+
     Escala escala = new Escala(
         voluntario: escalaControler.text,
         hora: horaController.text,
         data: dataController.text
     );
 
+    listaDeEscala.add(escala);
 
-    listEscala.add(escala);
-    print(listEscala);
-    _saveEscalaList(listEscala);
+    _saveEscalaList(listaDeEscala);
 
   }
 
   Future<void> _saveEscalaList(List<Escala> escalaList) async{
-    /*escalaObject.listEscala = escalaList;*/
-    String jsonEscala = jsonEncode(listEscala);
-    print(jsonEscala);
+    String escalaString = jsonEncode(escalaList);
+
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString("listEscala", jsonEscala);
+    prefs.setString('listEscala', escalaString);
 
-
-
-
-
-
-
-    /*ScaffoldMessenger.of(context).showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         dismissDirection: DismissDirection.down,
         elevation: 5,
@@ -242,24 +255,24 @@ Widget ButtonEscalas(){
     );
     Future.delayed(Duration(milliseconds: 800)).then((_) async {
       Navigator.pop(context);
-    });*/
+    });
   }
 
-  /*_getEscalaList() async {
-   listEscala = await loadEscalaList();
+
+  _loadListEscala() async{
+    final prefs = await SharedPreferences.getInstance();
+    final listEscala = prefs.getString('listEscala');
+
+    if(listEscala != null){
+      List<dynamic> objectEscala = jsonDecode(listEscala);
+      listaDeEscala = objectEscala.map((e) => Escala.fromJson(e)).toList();
+
+    }
   }
 
-    Future<List<Escala>> loadEscalaList() async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String jsonEscalas = prefs.getString("listEscala");
-
-    List<Escala> mylist = jsonDecode(jsonEscalas as Map<String, dynamic>).map((i) => Escala.fromJson(i)).toList();
-    print(mylist);
 
 
 
-    return listEscala;
-  }*/
 }
 
 

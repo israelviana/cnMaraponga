@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:app_transito/models/voluntario.dart';
 import 'package:app_transito/views/Voluntarios/Widgets/VoluntariosList.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,8 @@ class Voluntarios extends StatefulWidget {
 
 class _VoluntariosState extends State<Voluntarios> {
 
+  List<Voluntario> listaVoluntarios = [];
+
 
   Future requisitionVoluntario;
 
@@ -23,7 +27,12 @@ class _VoluntariosState extends State<Voluntarios> {
 
   Future<List<Voluntario>> loadVoluntarioList() async{
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getVoluntarioList("listVoluntario");
+    final listVoluntarioJson =  prefs.getString("keyVoluntario");
+
+    if(listVoluntarioJson != null){
+      List<dynamic> listVoluntario = jsonDecode(listVoluntarioJson);
+      return listVoluntario.map((e) => Voluntario.fromJson(e)).toList();
+    }
   }
 
   @override
@@ -34,8 +43,7 @@ class _VoluntariosState extends State<Voluntarios> {
         future: requisitionVoluntario,
         builder: (context, snapshot){
           if(snapshot.hasData && snapshot.connectionState == ConnectionState.done){
-            List<Voluntario> voluntario = <Voluntario>[];
-            voluntario = snapshot.data;
+            listaVoluntarios = snapshot.data;
             return Column(
               children: [
                 Text("VOLUNTÁRIOS", style: TextStyle(
@@ -45,8 +53,8 @@ class _VoluntariosState extends State<Voluntarios> {
                 )),
                 SizedBox(height: 20),
                 Column(
-                  children: List.generate(voluntario.length, (index) {
-                    return VoluntariosList(nome: voluntario[index].nome, cpf: voluntario[index].cpf, telefone: voluntario[index].telefone);
+                  children: List.generate(listaVoluntarios.length, (index) {
+                    return VoluntariosList(nome: listaVoluntarios[index].nome, cpf: listaVoluntarios[index].cpf, telefone: listaVoluntarios[index].telefone);
                   }),
                 )
               ],

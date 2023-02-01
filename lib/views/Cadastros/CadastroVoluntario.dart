@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:app_transito/core/AppImages.dart';
 import 'package:app_transito/models/voluntario.dart';
 import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CadastroVoluntario extends StatefulWidget{
@@ -16,14 +19,14 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
   final cpfController = TextEditingController(text: '');
   final telefoneController = TextEditingController(text: '');
 
-  var listVoluntario;
+  List<Voluntario> listaVoluntario = [];
 
   var _scaffoldKeyLogIn;
 
 
   @override
   void initState(){
-    _getVoluntarioList();
+    _loadVoluntarioList();
   }
 
   @override
@@ -164,7 +167,25 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
 
         }
       },
+      inputFormatters: [_MaskTextInputFormatter(title: title)]
     );
+  }
+
+  dynamic _MaskTextInputFormatter({title = ""}) {
+    switch (title) {
+      case "CPF":
+        return MaskTextInputFormatter(
+            initialText: cpfController.text,
+            mask: '###.###.###-##',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy);
+      case "TELEFONE":
+        return MaskTextInputFormatter(
+            initialText: telefoneController.text,
+            mask: '(##) #####-####',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy);
+    }
   }
 
   Widget ButtonConfirmar(){
@@ -205,8 +226,16 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
         nome: nomeController.text
     );
 
-    listVoluntario.add(voluntario);
-    _saveVoluntarioList(listVoluntario);
+    listaVoluntario.add(voluntario);
+    _saveVoluntarioList(listaVoluntario);
+
+  }
+
+  Future<void> _saveVoluntarioList(List<Voluntario> listVoluntario) async{
+    String jsonVoluntario = jsonEncode(listVoluntario);
+
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('keyVoluntario', jsonVoluntario);
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -223,24 +252,21 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
         backgroundColor:  Color(0xFF4FBD2D),
       ),
     );
+
     Future.delayed(Duration(milliseconds: 800)).then((_) async {
       Navigator.pop(context);
     });
   }
 
-  Future<void> _saveVoluntarioList(List<Voluntario> voluntarioList) async{
+  _loadVoluntarioList() async{
     final prefs = await SharedPreferences.getInstance();
-    prefs.setVoluntarioList("listVoluntario", voluntarioList);
-  }
+    final listVolutarioJson = prefs.getString('keyVoluntario');
 
-  _getVoluntarioList() async {
-    listVoluntario = await loadVoluntarioList();
-  }
+    if(listVolutarioJson != null){
+      List<dynamic> objectVoluntarios = jsonDecode(listVolutarioJson);
+      listaVoluntario = objectVoluntarios.map((e) => Voluntario.fromJson(e)).toList();
+    }
 
-  Future<List<Voluntario>> loadVoluntarioList() async{
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getVoluntarioList("listVoluntario") ?? [];
   }
-
 
 }

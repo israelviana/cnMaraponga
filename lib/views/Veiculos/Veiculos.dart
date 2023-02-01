@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:app_transito/views/Veiculos/Widgets/VeiculosList.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,15 +16,22 @@ class Veiculos extends StatefulWidget {
 class _VeiculosState extends State<Veiculos> {
   Future requisitionVeiculo;
 
+  List<Veiculo> listVeiculo = [];
+
 
   @override
   void initState(){
-    requisitionVeiculo = loadVeiculoList();
+    requisitionVeiculo = _loadVeiculoList();
   }
 
-  Future<List<Veiculo>> loadVeiculoList() async{
+  Future<List<Veiculo>> _loadVeiculoList() async{
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getVeiculoList("listVeiculo");
+    final listVeiculos = prefs.getString('veiculosKey');
+
+    if (listVeiculos != null){
+      List<dynamic> objectVeiculos = jsonDecode(listVeiculos);
+      return objectVeiculos.map((e) => Veiculo.fromJson(e)).toList();
+    }
   }
 
   @override
@@ -33,8 +42,7 @@ class _VeiculosState extends State<Veiculos> {
           future: requisitionVeiculo,
           builder: (context, snapshot){
             if(snapshot.hasData && snapshot.connectionState == ConnectionState.done){
-              List<Veiculo> veiculo = <Veiculo>[];
-              veiculo = snapshot.data;
+              listVeiculo = snapshot.data;
               return Column(
                 children: [
                   SizedBox(height: 20),
@@ -45,8 +53,8 @@ class _VeiculosState extends State<Veiculos> {
                   )),
                   SizedBox(height: 20),
                   Column(
-                    children: List.generate(veiculo.length, (index) {
-                      return VeiculosList(modelo: veiculo[index].modelo, cor: veiculo[index].cor, placa: veiculo[index].placa, condutor: veiculo[index].condutor, telefone: veiculo[index].telefone);
+                    children: List.generate(listVeiculo.length, (index) {
+                      return VeiculosList(modelo: listVeiculo[index].modelo, cor: listVeiculo[index].cor, placa: listVeiculo[index].placa, condutor: listVeiculo[index].condutor, telefone: listVeiculo[index].telefone);
                     }).toList(),
                   )
                 ],

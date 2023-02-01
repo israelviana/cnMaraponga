@@ -17,20 +17,23 @@ class Escalas extends StatefulWidget {
 
 class _EscalasState extends State<Escalas> {
   Future requisitionEscalas;
-  List<Escala> escala = <Escala>[];
+  List<Escala> listEscala = <Escala>[];
 
 
   @override
   void initState(){
-   requisitionEscalas = loadEscalaList();
+   requisitionEscalas = _loadListEscala();
   }
 
 
-  Future<List<Escala>> loadEscalaList() async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String jsonEscala = prefs.getString("listEscala");
-    escala = json.decode(jsonEscala).map((i) => Escala.fromJson(i)).toList();
-    return escala;
+  Future<List<Escala>> _loadListEscala() async{
+    final prefs = await SharedPreferences.getInstance();
+    final data = prefs.getString('listEscala');
+
+    if(data != null){
+      List<dynamic> jsonObjects = jsonDecode(data);
+      return jsonObjects.map((e) => Escala.fromJson(e)).toList();
+    }
   }
 
   @override
@@ -41,7 +44,7 @@ class _EscalasState extends State<Escalas> {
         future: requisitionEscalas,
           builder: (context, snapshot){
             if(snapshot.hasData && snapshot.connectionState == ConnectionState.done){
-              escala = snapshot.data;
+              listEscala = snapshot.data;
               return Column(
                 children: [
                   SizedBox(height: 20),
@@ -52,8 +55,8 @@ class _EscalasState extends State<Escalas> {
                   )),
                   SizedBox(height: 20),
                   Column(
-                   children: List.generate(escala.length, (index) {
-                     return EscalasListWidget(voluntario: escala[index].voluntario, data: escala[index].data, hora: escala[index].hora);
+                   children: List.generate(listEscala.length, (index) {
+                     return EscalasListWidget(voluntario: listEscala[index].voluntario, data: listEscala[index].data, hora: listEscala[index].hora);
                    }),
                   ),
                 ],
