@@ -23,6 +23,8 @@ class _LoginState extends State<Login> {
   final emailController = TextEditingController(text: '');
   final senhaController = TextEditingController(text: '');
   final _formkey = GlobalKey<FormState>();
+
+  bool _showPassword = false;
   var _scaffoldKeyLogIn;
 
   @override
@@ -87,7 +89,7 @@ class _LoginState extends State<Login> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20, bottom: 20),
-                child: _InputForm(senhaController, "SENHA", "Digite sua senha."),
+                child: _InputSenha(senhaController, "SENHA", "Digite sua senha."),
               ),
               SizedBox(height: 20),
               ButtonConfirmar(),
@@ -140,6 +142,59 @@ class _LoginState extends State<Login> {
           case "SENHA":
             if(value.isEmpty){
               return "Favor preencher o campo senha";
+            }
+            return null;
+        }
+      },
+    );
+  }
+
+  Widget _InputSenha(TextEditingController controller, String title, String hintText){
+    return TextFormField(
+      cursorColor: Color(0xFFf0821e),
+      controller: controller,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 5),
+          border: OutlineInputBorder(
+              borderSide: BorderSide(
+                  width: 4, color: Color(0xFFf0821e)
+              )
+          ),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  width: 2, color: Color(0xFFf0821e)
+              )
+          ),
+
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  width: 2, color: Color(0xFFf0821e)
+              )
+          ),
+          hintText: hintText,
+          hintStyle: TextStyle(
+              color: Colors.white70
+          ),
+
+          suffixIcon: GestureDetector(
+            child: Icon( _showPassword == false ? Icons.visibility_off : Icons.visibility, color: Color(0xFFf0821e),
+            ),
+            onTap: (){
+              setState(() {
+                _showPassword = !_showPassword;
+              });
+            },
+          )
+      ),
+      obscureText: _showPassword == false ? true : false,
+      style: TextStyle(
+          color: Colors.white70
+      ),
+      validator: (value){
+        switch (title){
+          case "SENHA":
+            if(value.isEmpty){
+              return "Favor preencher o campo e-mail";
             }
             return null;
         }
