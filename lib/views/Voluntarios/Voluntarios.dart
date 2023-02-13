@@ -37,38 +37,40 @@ class _VoluntariosState extends State<Voluntarios> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFF28282b),
-      body: FutureBuilder(
-        future: requisitionVoluntario,
-        builder: (context, snapshot){
-          if(snapshot.hasData && snapshot.connectionState == ConnectionState.done){
-            listaVoluntarios = snapshot.data;
-            return Column(
-              children: [
-                Text("VOLUNTÁRIOS", style: TextStyle(
-                    fontFamily: "OpensSans",
-                    fontSize: 40,
-                    color: Color(0xFFf0821e)
-                )),
-                SizedBox(height: 20),
-                Column(
-                  children: List.generate(listaVoluntarios.length, (index) {
-                    return VoluntariosList(nome: listaVoluntarios[index].nome, cpf: listaVoluntarios[index].cpf, telefone: listaVoluntarios[index].telefone);
-                  }),
-                )
-              ],
-            );
-          }else if(!snapshot.hasData && snapshot.connectionState == ConnectionState.done){
-            return Center(child: Text("Não possui dados de voluntarios!!!", style: TextStyle(
-                fontFamily: "OpensSans",
-                fontSize: 20,
-                color: Color(0xFFf0821e)
-            ),));
-          }else{
-            return CircularProgressIndicator();
-          }
-        },
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Color(0xFF28282b),
+        body: FutureBuilder(
+          future: requisitionVoluntario,
+          builder: (context, snapshot){
+            if(snapshot.hasData && snapshot.connectionState == ConnectionState.done){
+              listaVoluntarios = snapshot.data;
+              return Column(
+                children: [
+                  Text("VOLUNTÁRIOS", style: TextStyle(
+                      fontFamily: "OpensSans",
+                      fontSize: 40,
+                      color: Color(0xFFf0821e)
+                  )),
+                  SizedBox(height: 20),
+                  Column(
+                    children: List.generate(listaVoluntarios.length, (index) {
+                      return VoluntariosList(nome: listaVoluntarios[index].nome, cpf: listaVoluntarios[index].cpf, telefone: listaVoluntarios[index].telefone);
+                    }),
+                  )
+                ],
+              );
+            }else if(!snapshot.hasData && snapshot.connectionState == ConnectionState.done){
+              return Center(child: Text("Não possui dados de voluntarios!!!", style: TextStyle(
+                  fontFamily: "OpensSans",
+                  fontSize: 20,
+                  color: Color(0xFFf0821e)
+              ),));
+            }else{
+              return CircularProgressIndicator();
+            }
+          },
+        ),
       ),
     );
   }

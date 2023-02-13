@@ -17,6 +17,15 @@ dependencies:
   shared_preferences: ^2.0.16
   http: ^0.13.5
   mask_text_input_formatter: ^2.4.0
+  flutter_launcher_icons: ^0.11.0
+
+flutter_icons:
+  image_path: "assets/logos/logoMini.png"
+  ios: true
+  remove_alpha_ios: true
+  android: "launcher_icon"
+  adaptive_icon_backgroud: "#FFFFFF"
+  adaptive_icon_foreground: "assets/logos/logoMini.png"
 
 
 dev_dependencies:

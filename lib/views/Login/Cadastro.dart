@@ -41,39 +41,41 @@ class _CadastroState extends State<Cadastro> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFF28282b),
-      key: _scaffoldKeyLogIn,
-      body:
-      SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-              child: Column(
-                children: [
-                  SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      /*Image.asset(
-                        AppImages.logoMini,
-                      ),*/
-                      Text("Cadastro",
-                        style: TextStyle(
-                            fontFamily: "OpensSans",
-                            fontSize: 40,
-                            color: Color(0xFFf0821e)
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Color(0xFF28282b),
+        key: _scaffoldKeyLogIn,
+        body:
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                child: Column(
+                  children: [
+                    SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        /*Image.asset(
+                          AppImages.logoMini,
+                        ),*/
+                        Text("Cadastro",
+                          style: TextStyle(
+                              fontFamily: "OpensSans",
+                              fontSize: 40,
+                              color: Color(0xFFf0821e)
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 25),
-                  formCadastro()
-                ],
+                      ],
+                    ),
+                    SizedBox(height: 25),
+                    formCadastro()
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

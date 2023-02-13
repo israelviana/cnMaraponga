@@ -34,26 +34,28 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Color(0xFF28282b),
-      key: _scaffoldKeyLogIn,
-      body: SingleChildScrollView(
-        child: Padding(
-          
-          padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
-          child: Column(
-            children: [
-              Image.asset(AppImages.logoAplicativo),
-              FormLogin(),
-              SizedBox(height: 40),
-             /*Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Image.asset(AppImages.logoMini)
-                ],
-              )*/
-            ],
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Color(0xFF28282b),
+        key: _scaffoldKeyLogIn,
+        body: SingleChildScrollView(
+          child: Padding(
+
+            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
+            child: Column(
+              children: [
+                Image.asset(AppImages.logoAplicativo),
+                FormLogin(),
+                SizedBox(height: 40),
+               /*Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Image.asset(AppImages.logoMini)
+                  ],
+                )*/
+              ],
+            ),
           ),
         ),
       ),

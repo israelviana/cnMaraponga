@@ -33,35 +33,38 @@ class _CadastroEscalastate extends State<CadastroEscalas>{
 
   @override
   Widget build(BuildContext context){
-    return Scaffold(
-      key: _scaffoldKeyLogIn,
-      backgroundColor: Color(0xFF28282b),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
-              child: Column(
-                children: [
-                  Image.asset(AppImages.logoAplicativo),
-                  SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Cadastro de Escalas",
-                        style: TextStyle(
-                            fontFamily: "OpensSans",
-                            fontSize: 28,
-                            color: Color(0xFFf0821e)
+    return SafeArea(
+      child: Scaffold(
+        
+        key: _scaffoldKeyLogIn,
+        backgroundColor: Color(0xFF28282b),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
+                child: Column(
+                  children: [
+                    Image.asset(AppImages.logoAplicativo),
+                    SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Cadastro de Escalas",
+                          style: TextStyle(
+                              fontFamily: "OpensSans",
+                              fontSize: 28,
+                              color: Color(0xFFf0821e)
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ButtonEscalas()
-                ],
+                      ],
+                    ),
+                  ButtonEscalas()
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

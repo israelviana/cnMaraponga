@@ -21,28 +21,30 @@ class _Inicial extends State<Inicial>{
 
   @override
   Widget build(BuildContext context){
-    return Scaffold(
-      backgroundColor: Color(0xFF28282b),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
-        child: Column(
-          children: [
-            Image.asset(AppImages.logoAplicativo),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 100),
-              child: Container(
-                child: Column(
-                  children: [
-                    Button("Escalas", "escala"),
-                    SizedBox(height: 30),
-                    Button("Veículos", "veiculo"),
-                    SizedBox(height: 30),
-                    Button("Voluntários", "voluntario"),
-                  ],
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Color(0xFF28282b),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
+          child: Column(
+            children: [
+              Image.asset(AppImages.logoAplicativo),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 100),
+                child: Container(
+                  child: Column(
+                    children: [
+                      Button("Escalas", "escala"),
+                      SizedBox(height: 30),
+                      Button("Veículos", "veiculo"),
+                      SizedBox(height: 30),
+                      Button("Voluntários", "voluntario"),
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

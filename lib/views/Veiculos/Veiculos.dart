@@ -36,39 +36,41 @@ class _VeiculosState extends State<Veiculos> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFF28282b),
-      body: FutureBuilder(
-          future: requisitionVeiculo,
-          builder: (context, snapshot){
-            if(snapshot.hasData && snapshot.connectionState == ConnectionState.done){
-              listVeiculo = snapshot.data;
-              return Column(
-                children: [
-                  SizedBox(height: 20),
-                  Text("VEÍCULOS", style: TextStyle(
-                      fontFamily: "OpensSans",
-                      fontSize: 40,
-                      color: Color(0xFFf0821e)
-                  )),
-                  SizedBox(height: 20),
-                  Column(
-                    children: List.generate(listVeiculo.length, (index) {
-                      return VeiculosList(modelo: listVeiculo[index].modelo, cor: listVeiculo[index].cor, placa: listVeiculo[index].placa, condutor: listVeiculo[index].condutor, telefone: listVeiculo[index].telefone);
-                    }).toList(),
-                  )
-                ],
-              );
-            }else if(!snapshot.hasData && snapshot.connectionState == ConnectionState.done){
-              return Center(child: Text("Não possui dados de veiculos!!!", style: TextStyle(
-                  fontFamily: "OpensSans",
-                  fontSize: 20,
-                  color: Color(0xFFf0821e)
-              ),));
-            }else{
-              return CircularProgressIndicator();
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Color(0xFF28282b),
+        body: FutureBuilder(
+            future: requisitionVeiculo,
+            builder: (context, snapshot){
+              if(snapshot.hasData && snapshot.connectionState == ConnectionState.done){
+                listVeiculo = snapshot.data;
+                return Column(
+                  children: [
+                    SizedBox(height: 20),
+                    Text("VEÍCULOS", style: TextStyle(
+                        fontFamily: "OpensSans",
+                        fontSize: 40,
+                        color: Color(0xFFf0821e)
+                    )),
+                    SizedBox(height: 20),
+                    Column(
+                      children: List.generate(listVeiculo.length, (index) {
+                        return VeiculosList(modelo: listVeiculo[index].modelo, cor: listVeiculo[index].cor, placa: listVeiculo[index].placa, condutor: listVeiculo[index].condutor, telefone: listVeiculo[index].telefone);
+                      }).toList(),
+                    )
+                  ],
+                );
+              }else if(!snapshot.hasData && snapshot.connectionState == ConnectionState.done){
+                return Center(child: Text("Não possui dados de veiculos!!!", style: TextStyle(
+                    fontFamily: "OpensSans",
+                    fontSize: 20,
+                    color: Color(0xFFf0821e)
+                ),));
+              }else{
+                return CircularProgressIndicator();
+              }
             }
-          }
+        ),
       ),
     );
   }

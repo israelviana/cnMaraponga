@@ -38,40 +38,42 @@ class _EscalasState extends State<Escalas> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFF28282b),
-      body: FutureBuilder(
-        future: requisitionEscalas,
-          builder: (context, snapshot){
-            if(snapshot.hasData && snapshot.connectionState == ConnectionState.done){
-              listEscala = snapshot.data;
-              return Column(
-                children: [
-                  SizedBox(height: 20),
-                  Text("ESCALAS", style: TextStyle(
-                      fontFamily: "OpensSans",
-                      fontSize: 40,
-                      color: Color(0xFFf0821e)
-                  )),
-                  SizedBox(height: 20),
-                  Column(
-                   children: List.generate(listEscala.length, (index) {
-                     return EscalasListWidget(voluntario: listEscala[index].voluntario, data: listEscala[index].data, hora: listEscala[index].hora);
-                   }),
-                  ),
-                ],
-              );
-            }else if(!snapshot.hasData && snapshot.connectionState == ConnectionState.done){
-              return Center(child: Text("Não possui dados de escalas!!!", style: TextStyle(
-                  fontFamily: "OpensSans",
-                  fontSize: 20,
-                  color: Color(0xFFf0821e)
-              ),));
-            }else{
-              return CircularProgressIndicator();
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Color(0xFF28282b),
+        body: FutureBuilder(
+          future: requisitionEscalas,
+            builder: (context, snapshot){
+              if(snapshot.hasData && snapshot.connectionState == ConnectionState.done){
+                listEscala = snapshot.data;
+                return Column(
+                  children: [
+                    SizedBox(height: 20),
+                    Text("ESCALAS", style: TextStyle(
+                        fontFamily: "OpensSans",
+                        fontSize: 40,
+                        color: Color(0xFFf0821e)
+                    )),
+                    SizedBox(height: 20),
+                    Column(
+                     children: List.generate(listEscala.length, (index) {
+                       return EscalasListWidget(voluntario: listEscala[index].voluntario, data: listEscala[index].data, hora: listEscala[index].hora);
+                     }),
+                    ),
+                  ],
+                );
+              }else if(!snapshot.hasData && snapshot.connectionState == ConnectionState.done){
+                return Center(child: Text("Não possui dados de escalas!!!", style: TextStyle(
+                    fontFamily: "OpensSans",
+                    fontSize: 20,
+                    color: Color(0xFFf0821e)
+                ),));
+              }else{
+                return CircularProgressIndicator();
+              }
             }
-          }
-      )
+        )
+      ),
     );
   }
 }
