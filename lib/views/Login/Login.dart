@@ -282,12 +282,14 @@ class _LoginState extends State<Login> {
     User savedUser = await _getSavedUser();
 
     if(mail == savedUser.mail && password == savedUser.password){
+      FocusScope.of(context).unfocus();
       ScalffoldMensage.messageSucessLogin(
           "Seja bem-vindo!", _scaffoldKeyLogIn);
       Future.delayed(Duration(milliseconds: 800)).then((_) async {
         Navigator.pushNamed(context, inicialRoute);
       });
     }else{
+      FocusScope.of(context).unfocus();
       ScalffoldMensage.messageErrorLogin(
           "Email ou Senha incorretos!", _scaffoldKeyLogIn);
     }
