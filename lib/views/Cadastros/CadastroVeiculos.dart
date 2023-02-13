@@ -216,7 +216,6 @@ class _CadastroVeiculos extends State<CadastroVeiculos>{
         return MaskTextInputFormatter(
             initialText: placaController.text,
             mask: '###-####',
-            filter: {"#": RegExp(r'[0-9]')},
             type: MaskAutoCompletionType.lazy);
       case "TELEFONE":
         return MaskTextInputFormatter(
