@@ -23,7 +23,19 @@ class EscalasRepository extends ChangeNotifier {
   _getEscalas() async{
     db = await DB.instance.database;
 
-    List escalas = await db.query('escalas');
+    List<Map<String, dynamic>> escalas = await db.query('escalas');
+    _Escalas = escalas.map((escala) => Escala(id: escala['id'], voluntario:  escala['nome'], data: escala['data'], hora: escala['hora'])).toList();
+
+    notifyListeners();
+  }
+
+  setEscalas(String nome, String data, String hora) async{
+    db = await DB.instance.database;
+    db.insert('escalas', {
+      'nome': nome,
+      'data': data,
+      'hora': hora
+    });
     notifyListeners();
   }
 

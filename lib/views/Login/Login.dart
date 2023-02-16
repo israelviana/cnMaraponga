@@ -285,15 +285,41 @@ class _LoginState extends State<Login> {
 
     if(mail == savedUser.mail && password == savedUser.password){
       FocusScope.of(context).unfocus();
-      ScalffoldMensage.messageSucessLogin(
-          "Seja bem-vindo!", _scaffoldKeyLogIn);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          dismissDirection: DismissDirection.down,
+          elevation: 5,
+          behavior: SnackBarBehavior.floating,
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(
+                  child: Text("Seja bem-vindo!"))
+            ],
+          ),
+          backgroundColor:  Color(0xFF4FBD2D),
+        ),
+      );
       Future.delayed(Duration(milliseconds: 800)).then((_) async {
         Navigator.pushNamed(context, inicialRoute);
       });
     }else{
       FocusScope.of(context).unfocus();
-      ScalffoldMensage.messageErrorLogin(
-          "Email ou Senha incorretos!", _scaffoldKeyLogIn);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          dismissDirection: DismissDirection.down,
+          elevation: 5,
+          behavior: SnackBarBehavior.floating,
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(
+                  child: Text("Email ou Senha incorretos!"))
+            ],
+          ),
+          backgroundColor:  Color(0xFF4FBD2D),
+        ),
+      );
     }
   }
 

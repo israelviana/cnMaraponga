@@ -53,7 +53,7 @@ class DB{
     placa VARCHAR(255),
     condutor VARCHAR(255),
     modelo VARCHAR(255),
-    telefone VARCHAR(30),
+    telefone VARCHAR(30)
   );
 ''';
 
@@ -62,7 +62,7 @@ class DB{
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome VARCHAR(255),
     data VARCHAR(255),
-    hora VARCHAR(255),
+    hora VARCHAR(255)
   );
 ''';
 
@@ -71,8 +71,8 @@ class DB{
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome VARCHAR(255),
     cpf VARCHAR(255),
-    telefone VARCHAR(255),
-  
+    telefone VARCHAR(255)
+ 
   );
 ''';
 

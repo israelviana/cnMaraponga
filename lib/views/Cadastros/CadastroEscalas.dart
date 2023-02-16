@@ -3,10 +3,13 @@ import 'dart:convert';
 
 import 'package:app_transito/core/AppImages.dart';
 import 'package:app_transito/models/escala.dart';
+import 'package:app_transito/repository/escalas_repository.dart';
 import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
 
 class CadastroEscalas extends StatefulWidget {
   const CadastroEscalas({Key key}) : super(key: key);
@@ -28,14 +31,13 @@ class _CadastroEscalastate extends State<CadastroEscalas>{
   @override
   void initState(){
     super.initState();
-    _loadListEscala();
+    /*_loadListEscala();*/
   }
 
   @override
   Widget build(BuildContext context){
     return SafeArea(
       child: Scaffold(
-        
         key: _scaffoldKeyLogIn,
         backgroundColor: Color(0xFF28282b),
         body: SingleChildScrollView(
@@ -187,7 +189,11 @@ Widget ButtonEscalas(){
             mask: '##:##',
             filter: {"#": RegExp(r'[0-9]')},
             type: MaskAutoCompletionType.lazy);
+      default:
+        return MaskTextInputFormatter(
+            initialText: escalaControler.text.toUpperCase());
     }
+
   }
 
   Widget ButtonConfirmar(){
@@ -200,8 +206,8 @@ Widget ButtonEscalas(){
       ),
       child: InkWell(
         onTap: (){
-          if(_formkey.currentState.validate()){
-            _adicionarList();
+          if(_formkey.currentState.validate()) {
+            _cadastrarEscala();
           }
         },
         child: Row(
@@ -221,25 +227,17 @@ Widget ButtonEscalas(){
     );
   }
 
-  void _adicionarList() async{
+  _cadastrarEscala() async {
 
-    Escala escala = new Escala(
-        voluntario: escalaControler.text,
-        hora: horaController.text,
-        data: dataController.text
-    );
+    final database = await openDatabase('cnMaraponga.db');
 
-    listaDeEscala.add(escala);
+    await database.insert('escalas', {
+      'nome': escalaControler.text,
+      'data': dataController.text,
+      'hora': horaController.text
+    });
 
-    _saveEscalaList(listaDeEscala);
-
-  }
-
-  Future<void> _saveEscalaList(List<Escala> escalaList) async{
-    String escalaString = jsonEncode(escalaList);
-
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('listEscala', escalaString);
+    database.close();
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -256,24 +254,11 @@ Widget ButtonEscalas(){
         backgroundColor:  Color(0xFF4FBD2D),
       ),
     );
+
     Future.delayed(Duration(milliseconds: 800)).then((_) async {
       Navigator.pop(context);
     });
   }
-
-
-  _loadListEscala() async{
-    final prefs = await SharedPreferences.getInstance();
-    final listEscala = prefs.getString('listEscala');
-
-    if(listEscala != null){
-      List<dynamic> objectEscala = jsonDecode(listEscala);
-      listaDeEscala = objectEscala.map((e) => Escala.fromJson(e)).toList();
-
-    }
-  }
-
-
 
 
 }

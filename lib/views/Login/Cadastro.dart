@@ -290,8 +290,21 @@ class _CadastroState extends State<Cadastro> {
                 }else{
                   _doSign();
                   Navigator.pop(contextModal);
-                  ScalffoldMensage.messageSucessLogin(
-                      "Cadastro realizado com sucesso!", _scaffoldKeyLogIn);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      dismissDirection: DismissDirection.down,
+                      elevation: 5,
+                      behavior: SnackBarBehavior.floating,
+                      content: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                              child: Text("Cadastro realizado com sucesso!"))
+                        ],
+                      ),
+                      backgroundColor:  Color(0xFF4FBD2D),
+                    ),
+                  );
                   Future.delayed(Duration(seconds: 2)).then((_) async {
                     Navigator.pop(context);
                   });
