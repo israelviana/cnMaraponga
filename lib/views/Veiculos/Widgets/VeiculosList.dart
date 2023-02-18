@@ -7,11 +7,13 @@ class VeiculosList extends StatelessWidget {
         @required this.cor,
         @required this.placa,
         @required this.condutor,
-        @required this.telefone
+        @required this.telefone,
+        @required this.funcao,
+
       })
       : super(key: key);
 
-  final modelo, cor, placa, condutor, telefone;
+  final modelo, cor, placa, condutor, telefone, funcao;
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +137,14 @@ class VeiculosList extends StatelessWidget {
                             )],
                         ),
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(onPressed: (){
+                            funcao();
+                          }, icon: Icon(Icons.create_outlined)),
+                        ],
+                      )
                     ]))));
   }
 }

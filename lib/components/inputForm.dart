@@ -135,6 +135,12 @@ class _InputFormState extends State<InputForm> {
             mask: '###.###.###-##',
             filter: {"#": RegExp(r'[0-9]')},
             type: MaskAutoCompletionType.lazy);
+      case "PLACA":
+        return MaskTextInputFormatter(
+            initialText: widget.controller.text,
+            mask: '###-####',
+            filter: {"#": RegExp(r'[A-Za-z0-9]')},
+            type: MaskAutoCompletionType.lazy);
       default:
         return MaskTextInputFormatter(
           initialText: widget.controller.text.toUpperCase(),

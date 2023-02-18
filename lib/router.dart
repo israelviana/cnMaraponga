@@ -1,3 +1,4 @@
+import 'package:app_transito/views/Edicao/EditVeiculos.dart';
 import 'package:app_transito/views/Escalas/Escalas.dart';
 import 'package:app_transito/views/Login/Cadastro.dart';
 import 'package:app_transito/views/Login/EsqueceuSenha.dart';
@@ -16,19 +17,23 @@ const String esqueceuSenhaRoute = '/esqueceuSenha';
 const String cadastroRoute = '/cadastro';
 const String inicialRoute = '/inicial';
 
-//Cadastros
-const String cadastroEscalasRoute = '/cadastroEscalas';
-const String cadastroVeiculosRoute = '/cadastroVeiculos';
-const String cadastroVoluntarioRoute = '/cadastroVoluntario';
 
 //Escalas
 const String escalasRoute = '/escalas';
+const String cadastroEscalasRoute = '/cadastroEscalas';
+const String edicaoEscalaRoute = '/edicaoEscala';
 
 //Veiculos
 const String veiculosRoute = '/veiculos';
+const String cadastroVeiculosRoute = '/cadastroVeiculos';
+const String edicaoVeiculoRoute = '/edicaoVeiculo';
 
 //Voluntarios
 const String voluntariosRoute = '/voluntarios';
+const String cadastroVoluntarioRoute = '/cadastroVoluntario';
+const String edicaoVoluntarioRoute = '/edicaoVoluntario';
+
+
 
 class RouterCn{
   mainRoutes(){
@@ -54,6 +59,9 @@ class RouterCn{
           return MaterialPageRoute(builder: (_) => Veiculos());
         case voluntariosRoute:
           return MaterialPageRoute(builder: (_) => Voluntarios());
+        case edicaoVeiculoRoute:
+          String id = setting.arguments;
+          return MaterialPageRoute(builder: (_) => EditVeiculos(id: id));
       }
     };
   }
