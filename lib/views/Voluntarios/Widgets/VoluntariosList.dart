@@ -6,10 +6,11 @@ class VoluntariosList extends StatelessWidget {
         @required this.nome,
         @required this.cpf,
         @required this.telefone,
+        @required this.function
       })
       : super(key: key);
 
-  final nome, cpf, telefone;
+  final nome, cpf, telefone, function;
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +94,14 @@ class VoluntariosList extends StatelessWidget {
                             )],
                         ),
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(onPressed: (){
+                            function();
+                          }, icon: Icon(Icons.create_outlined)),
+                        ],
+                      )
                     ]))));
   }
 }

@@ -1,58 +1,91 @@
 
 import 'dart:convert';
 
-import 'package:app_transito/models/veiculos.dart';
+import 'package:app_transito/core/AppImages.dart';
+import 'package:app_transito/models/escala.dart';
+import 'package:app_transito/repository/escalas_repository.dart';
 import 'package:app_transito/router.dart';
 import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../../core/AppImages.dart';
-
-class EditVeiculos extends StatefulWidget{
-  const EditVeiculos({Key key, this.id}) : super(key: key);
+class EditEscalas extends StatefulWidget {
+  const EditEscalas({Key key, this.id}) : super(key: key);
   final id;
 
-  State<EditVeiculos> createState() => _EditVeiculos();
+  @override
+  State<EditEscalas> createState() => _EditEscalasState();
+
 }
-
-class _EditVeiculos extends State<EditVeiculos>{
+class _EditEscalasState extends State<EditEscalas>{
   final _formkey = GlobalKey<FormState>();
-  final modeloController = TextEditingController(text: '');
-  final corController = TextEditingController(text: '');
-  final placaController = TextEditingController(text: '');
-  final condutorController = TextEditingController(text: '');
-  final telefoneController = TextEditingController(text: '');
+  final escalaControler = TextEditingController(text: '');
+  final dataController = TextEditingController(text: '');
+  final horaController = TextEditingController(text: '');
 
-  List<Veiculo> listVeiculo = [];
+  List<Escala> listaDeEscala = [];
 
   var _scaffoldKeyLogIn;
 
   @override
   void initState(){
-    _findByIdVeiculo();
+    _findByIdEscala();
+
   }
 
-  _findByIdVeiculo() async{
+  _findByIdEscala() async{
     final database = await openDatabase('cnMaraponga.db');
 
-    List<Map<String, dynamic>> veiculos = await database.query('veiculos', where: '"id" = ?', whereArgs: ['${widget.id}'], limit: 1);
+    List<Map<String, dynamic>> escalas = await database.query('escalas', where: '"id" = ?', whereArgs: ['${widget.id}'], limit: 1);
 
     setState(() {
-      listVeiculo = veiculos.map((veiculo) => Veiculo(id: veiculo['id'], telefone: veiculo['telefone'], placa: veiculo['placa'], modelo: veiculo['modelo'], cor: veiculo['cor'], condutor: veiculo['condutor'])).toList();
-      modeloController.text = listVeiculo[0].modelo;
-      corController.text = listVeiculo[0].cor;
-      placaController.text = listVeiculo[0].placa;
-      condutorController.text = listVeiculo[0].condutor;
-      telefoneController.text = listVeiculo[0].telefone;
+      listaDeEscala = escalas.map((escala) => Escala(id: escala['id'], voluntario:  escala['nome'], data: escala['data'], hora: escala['hora'])).toList();
+      escalaControler.text = listaDeEscala[0].voluntario;
+      dataController.text = listaDeEscala[0].data;
+      horaController.text = listaDeEscala[0].hora;
     });
 
     database.close();
-
   }
 
+  _updateEscala() async {
+
+    final database = await openDatabase('cnMaraponga.db');
+
+    await database.update('escalas', {
+      'nome': escalaControler.text,
+      'data': dataController.text,
+      'hora': horaController.text
+    },
+      where: '"id" = ?',
+      whereArgs: ['${widget.id}']
+    );
+
+    database.close();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        dismissDirection: DismissDirection.down,
+        elevation: 5,
+        behavior: SnackBarBehavior.floating,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(
+                child: Text("Escala editada com sucesso!"))
+          ],
+        ),
+        backgroundColor:  Color(0xFF4FBD2D),
+      ),
+    );
+
+    Future.delayed(Duration(milliseconds: 800)).then((_) async {
+      Navigator.popAndPushNamed(context, escalasRoute);
+    });
+  }
 
   @override
   Widget build(BuildContext context){
@@ -72,7 +105,7 @@ class _EditVeiculos extends State<EditVeiculos>{
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Edição de Veículo",
+                        Text("Edição de Escalas",
                           style: TextStyle(
                               fontFamily: "OpensSans",
                               fontSize: 28,
@@ -81,7 +114,7 @@ class _EditVeiculos extends State<EditVeiculos>{
                         ),
                       ],
                     ),
-                    ButtonVeiculos()
+                    ButtonEscalas()
                   ],
                 ),
               ),
@@ -92,15 +125,15 @@ class _EditVeiculos extends State<EditVeiculos>{
     );
   }
 
-  Widget ButtonVeiculos(){
+  Widget ButtonEscalas(){
     return Form(
       key: _formkey,
       child: Padding(
-        padding: const EdgeInsets.only(top: 35),
+        padding: const EdgeInsets.only(top: 58),
         child: Column(
           children: [
             Text(
-              "Modelo:",
+              "Voluntário:",
               style: TextStyle(
                 fontFamily: 'OpenSans',
                 fontSize: 24,
@@ -108,11 +141,11 @@ class _EditVeiculos extends State<EditVeiculos>{
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 10),
-              child: _InputForm(modeloController, 'MODELO', 'Modelo'),
+              padding: const EdgeInsets.only(top: 20, bottom: 13),
+              child: _InputForm(escalaControler, 'VOLUNTARIO', 'Volutário'),
             ),
             Text(
-              "Cor: ",
+              "Data: ",
               style: TextStyle(
                   fontFamily: 'OpenSans',
                   fontSize: 24,
@@ -120,11 +153,11 @@ class _EditVeiculos extends State<EditVeiculos>{
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 20,bottom: 10),
-              child: _InputForm(corController, 'COR', 'Cor'),
+              padding: const EdgeInsets.only(top: 20,bottom: 13),
+              child: _InputForm(dataController, 'DATA', 'Data'),
             ),
             Text(
-              "Placa: ",
+              "Hora: ",
               style: TextStyle(
                   fontFamily: 'OpenSans',
                   fontSize: 24,
@@ -132,34 +165,8 @@ class _EditVeiculos extends State<EditVeiculos>{
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 20,bottom: 10),
-              child: _InputForm(placaController, 'PLACA', 'Placa'),
-            ),
-            SizedBox(height: 20),
-            Text(
-              "Condutor: ",
-              style: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontSize: 24,
-                  color: Color(0xFFf0821e)
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20,bottom: 10),
-              child: _InputForm(condutorController, 'CONDUTOR', 'Condutor'),
-            ),
-            SizedBox(height: 20),
-            Text(
-              "Telefone: ",
-              style: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontSize: 24,
-                  color: Color(0xFFf0821e)
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20,bottom: 10),
-              child: _InputForm(telefoneController, 'TELEFONE', 'Telefone'),
+              padding: const EdgeInsets.only(top: 20,bottom: 15),
+              child: _InputForm(horaController, 'HORA', 'hora'),
             ),
             SizedBox(height: 20),
             ButtonConfirmar(),
@@ -201,29 +208,19 @@ class _EditVeiculos extends State<EditVeiculos>{
         ),
         validator: (value) {
           switch (title) {
-            case "MODELO":
+            case "VOLUNTARIO":
               if (value.isEmpty) {
-                return "Favor preencher o campo modelo.";
+                return "Favor preencher o campo voluntário";
               }
               return null;
-            case "COR":
+            case "DATA":
               if (value.isEmpty) {
-                return "Favor preencher o campo cor.";
+                return "Favor preencher o campo data";
               }
               return null;
-            case "PLACA":
+            case "HORA":
               if (value.isEmpty){
-                return "Favor preencher o campo placa.";
-              }
-              return null;
-            case "CONDUTOR":
-              if (value.isEmpty){
-                return "Favor preencher o campo condutor.";
-              }
-              return null;
-            case "TELEFONE":
-              if (value.isEmpty){
-                return "Favor preencher o campo telefone.";
+                return "Favor preencher o campo hora";
               }
           }
         },
@@ -233,19 +230,23 @@ class _EditVeiculos extends State<EditVeiculos>{
 
   dynamic _MaskTextInputFormatter({title = ""}) {
     switch (title) {
-      case "PLACA":
+      case "DATA":
         return MaskTextInputFormatter(
-            initialText: placaController.text,
-            mask: '###-####',
-            filter: {"#": RegExp(r'[A-Za-z0-9]')},
-            type: MaskAutoCompletionType.lazy);
-      case "TELEFONE":
-        return MaskTextInputFormatter(
-            initialText: telefoneController.text,
-            mask: '(##) #####-####',
+            initialText: dataController.text,
+            mask: '##/##/####',
             filter: {"#": RegExp(r'[0-9]')},
             type: MaskAutoCompletionType.lazy);
+      case "HORA":
+        return MaskTextInputFormatter(
+            initialText: horaController.text,
+            mask: '##:##',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy);
+      default:
+        return MaskTextInputFormatter(
+            initialText: escalaControler.text.toUpperCase());
     }
+
   }
 
   Widget ButtonConfirmar(){
@@ -258,8 +259,8 @@ class _EditVeiculos extends State<EditVeiculos>{
       ),
       child: InkWell(
         onTap: (){
-          if (_formkey.currentState.validate()) {
-            _editVeiculo();
+          if(_formkey.currentState.validate()) {
+            _updateEscala();
           }
         },
         child: Row(
@@ -279,41 +280,8 @@ class _EditVeiculos extends State<EditVeiculos>{
     );
   }
 
-  _editVeiculo() async{
-    final database = await openDatabase('cnMaraponga.db');
-
-    await database.update('veiculos', {
-      'cor': corController.text,
-      'placa': placaController.text,
-      'condutor': condutorController.text,
-      'modelo': modeloController.text,
-      'telefone': telefoneController.text
-    },
-      where: '"id" = ?',
-      whereArgs: ['${widget.id}']
-    );
-
-    database.close();
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        dismissDirection: DismissDirection.down,
-        elevation: 5,
-        behavior: SnackBarBehavior.floating,
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Flexible(
-                child: Text("Veículo editado com sucesso!"))
-          ],
-        ),
-        backgroundColor:  Color(0xFF4FBD2D),
-      ),
-    );
-
-    Future.delayed(Duration(milliseconds: 800)).then((_) async {
-      Navigator.popAndPushNamed(context, veiculosRoute);
-    });
-  }
-
 }
+
+
+
+

@@ -1,5 +1,5 @@
 class Escala{
-  int    id;
+  int id;
   String voluntario;
   String data;
   String hora;

@@ -1,4 +1,6 @@
+import 'package:app_transito/views/Edicao/EditEscalas.dart';
 import 'package:app_transito/views/Edicao/EditVeiculos.dart';
+import 'package:app_transito/views/Edicao/EditVoluntarios.dart';
 import 'package:app_transito/views/Escalas/Escalas.dart';
 import 'package:app_transito/views/Login/Cadastro.dart';
 import 'package:app_transito/views/Login/EsqueceuSenha.dart';
@@ -11,12 +13,11 @@ import 'package:app_transito/views/Veiculos/Veiculos.dart';
 import 'package:app_transito/views/Voluntarios/Voluntarios.dart';
 import 'package:flutter/material.dart';
 
-
+//Login
 const String loginRoute = '/login';
 const String esqueceuSenhaRoute = '/esqueceuSenha';
 const String cadastroRoute = '/cadastro';
 const String inicialRoute = '/inicial';
-
 
 //Escalas
 const String escalasRoute = '/escalas';
@@ -62,6 +63,12 @@ class RouterCn{
         case edicaoVeiculoRoute:
           String id = setting.arguments;
           return MaterialPageRoute(builder: (_) => EditVeiculos(id: id));
+        case edicaoEscalaRoute:
+          String id = setting.arguments;
+          return MaterialPageRoute(builder: (_) => EditEscalas(id: id));
+        case edicaoVoluntarioRoute:
+          String id = setting.arguments;
+          return MaterialPageRoute(builder: (_) => EditVoluntario(id: id));
       }
     };
   }

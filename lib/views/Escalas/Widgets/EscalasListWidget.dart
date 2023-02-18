@@ -6,10 +6,11 @@ class EscalasListWidget extends StatelessWidget {
         @required this.voluntario,
         @required this.data,
         @required this.hora,
+        @required this.function
       })
       : super(key: key);
 
-  final voluntario, data, hora;
+  final voluntario, data, hora, function;
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +94,15 @@ class EscalasListWidget extends StatelessWidget {
                             )],
                         ),
                       ),
-                      SizedBox(height: size.height * 0.01),
-                    ]))));
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(onPressed: (){
+                            function();
+                          }, icon: Icon(Icons.create_outlined)),
+                        ],
+                      )
+                    ])
+            )));
   }
 }
