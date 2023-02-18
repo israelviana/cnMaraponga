@@ -317,7 +317,7 @@ class _LoginState extends State<Login> {
                   child: Text("Email ou Senha incorretos!"))
             ],
           ),
-          backgroundColor:  Color(0xFF4FBD2D),
+          backgroundColor: Colors.red,
         ),
       );
     }

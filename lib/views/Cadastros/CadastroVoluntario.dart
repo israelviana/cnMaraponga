@@ -6,6 +6,7 @@ import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
 
 class CadastroVoluntario extends StatefulWidget{
   const CadastroVoluntario({Key key}) : super(key: key);
@@ -23,11 +24,6 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
 
   var _scaffoldKeyLogIn;
 
-
-  @override
-  void initState(){
-    _loadVoluntarioList();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -201,7 +197,7 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
       child: InkWell(
         onTap: (){
           if (_formkey.currentState.validate()) {
-            _adicionarList();
+            _adicionarVoluntario();
           }
         },
         child: Row(
@@ -221,23 +217,16 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
     );
   }
 
-  void _adicionarList(){
-    Voluntario voluntario = new Voluntario(
-        telefone: telefoneController.text,
-        cpf: cpfController.text,
-        nome: nomeController.text
-    );
+  _adicionarVoluntario() async{
+    final database = await openDatabase('cnMaraponga.db');
 
-    listaVoluntario.add(voluntario);
-    _saveVoluntarioList(listaVoluntario);
+    await database.insert('voluntarios', {
+      'nome': nomeController.text,
+      'cpf': cpfController.text,
+      'telefone': telefoneController.text
+    });
 
-  }
-
-  Future<void> _saveVoluntarioList(List<Voluntario> listVoluntario) async{
-    String jsonVoluntario = jsonEncode(listVoluntario);
-
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('keyVoluntario', jsonVoluntario);
+    database.close();
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -248,7 +237,7 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Flexible(
-                child: Text("Voluntário cadastrado com sucesso!!"))
+                child: Text("Voluntario cadastrado com sucesso!!"))
           ],
         ),
         backgroundColor:  Color(0xFF4FBD2D),
@@ -258,16 +247,7 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
     Future.delayed(Duration(milliseconds: 800)).then((_) async {
       Navigator.pop(context);
     });
-  }
 
-  _loadVoluntarioList() async{
-    final prefs = await SharedPreferences.getInstance();
-    final listVolutarioJson = prefs.getString('keyVoluntario');
-
-    if(listVolutarioJson != null){
-      List<dynamic> objectVoluntarios = jsonDecode(listVolutarioJson);
-      listaVoluntario = objectVoluntarios.map((e) => Voluntario.fromJson(e)).toList();
-    }
 
   }
 
