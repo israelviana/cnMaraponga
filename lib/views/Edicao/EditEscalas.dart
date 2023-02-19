@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:app_transito/core/AppImages.dart';
 import 'package:app_transito/models/escala.dart';
-import 'package:app_transito/repository/escalas_repository.dart';
 import 'package:app_transito/router.dart';
 import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +10,8 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
+
+import '../../database/db.dart';
 
 class EditEscalas extends StatefulWidget {
   const EditEscalas({Key key, this.id}) : super(key: key);
@@ -37,7 +38,7 @@ class _EditEscalasState extends State<EditEscalas>{
   }
 
   _findByIdEscala() async{
-    final database = await openDatabase('cnMaraponga.db');
+    final database = await DB.instance.database;
 
     List<Map<String, dynamic>> escalas = await database.query('escalas', where: '"id" = ?', whereArgs: ['${widget.id}'], limit: 1);
 

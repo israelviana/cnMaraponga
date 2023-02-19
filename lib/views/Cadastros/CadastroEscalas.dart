@@ -3,13 +3,14 @@ import 'dart:convert';
 
 import 'package:app_transito/core/AppImages.dart';
 import 'package:app_transito/models/escala.dart';
-import 'package:app_transito/repository/escalas_repository.dart';
 import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
+
+import '../../database/db.dart';
 
 class CadastroEscalas extends StatefulWidget {
   const CadastroEscalas({Key key}) : super(key: key);
@@ -229,7 +230,8 @@ Widget ButtonEscalas(){
 
   _cadastrarEscala() async {
 
-    final database = await openDatabase('cnMaraponga.db');
+    final database = await DB.instance.database;
+
 
     await database.insert('escalas', {
       'nome': escalaControler.text,

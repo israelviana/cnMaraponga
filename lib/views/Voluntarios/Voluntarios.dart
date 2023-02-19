@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../components/inputForm.dart';
+import '../../database/db.dart';
 
 enum typeModal{
   modal
@@ -40,7 +41,7 @@ class _VoluntariosState extends State<Voluntarios> {
 
 
   _carregarVoluntarios() async{
-    final database = await openDatabase('cnMaraponga.db');
+    final database = await DB.instance.database;
 
     List<Map<String, dynamic>> voluntarios = await database.query('voluntarios');
 
@@ -52,7 +53,7 @@ class _VoluntariosState extends State<Voluntarios> {
   }
 
   _buscarCpf(String cpf) async{
-    final database = await openDatabase('cnMaraponga.db');
+    final database = await DB.instance.database;
 
     List<Map<String, dynamic>> voluntarios = await database.query('voluntarios',where: '"cpf" = ?', whereArgs: ['$cpf']);
 
@@ -124,6 +125,7 @@ class _VoluntariosState extends State<Voluntarios> {
                           child: ListView.builder(
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
                               itemCount: listaVoluntarios.length,
                               itemBuilder: (BuildContext context, int index){
                                 return VoluntariosList(nome: listaVoluntarios[index].nome, cpf: listaVoluntarios[index].cpf, telefone: listaVoluntarios[index].telefone, function: () => _modal(typeModal.modal, listaVoluntarios[index].id.toString()));

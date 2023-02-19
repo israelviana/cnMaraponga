@@ -8,6 +8,8 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../database/db.dart';
+
 class CadastroVoluntario extends StatefulWidget{
   const CadastroVoluntario({Key key}) : super(key: key);
 
@@ -165,11 +167,11 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
 
         }
       },
-      inputFormatters: [_MaskTextInputFormatter(title: title)]
+      inputFormatters: [_MaskTextInputFormatter(title: title, controller: controller)]
     );
   }
 
-  dynamic _MaskTextInputFormatter({title = ""}) {
+  dynamic _MaskTextInputFormatter({title = "", controller}) {
     switch (title) {
       case "CPF":
         return MaskTextInputFormatter(
@@ -183,6 +185,10 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
             mask: '(##) #####-####',
             filter: {"#": RegExp(r'[0-9]')},
             type: MaskAutoCompletionType.lazy);
+      default:
+        return MaskTextInputFormatter(
+          initialText: controller.text.toUpperCase(),
+        );
     }
   }
 
@@ -218,7 +224,7 @@ class _CadastroVoluntario extends State<CadastroVoluntario> {
   }
 
   _adicionarVoluntario() async{
-    final database = await openDatabase('cnMaraponga.db');
+    final database = await DB.instance.database;
 
     await database.insert('voluntarios', {
       'nome': nomeController.text,

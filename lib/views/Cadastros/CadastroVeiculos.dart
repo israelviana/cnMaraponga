@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../core/AppImages.dart';
+import '../../database/db.dart';
 
 class CadastroVeiculos extends StatefulWidget{
   const CadastroVeiculos({Key key}) : super(key: key);
@@ -203,11 +204,11 @@ class _CadastroVeiculos extends State<CadastroVeiculos>{
             }
         }
       },
-        inputFormatters: [_MaskTextInputFormatter(title: title)]
+        inputFormatters: [_MaskTextInputFormatter(title: title, controller: controller)]
     );
   }
 
-  dynamic _MaskTextInputFormatter({title = ""}) {
+  dynamic _MaskTextInputFormatter({title = "", controller}) {
     switch (title) {
       case "PLACA":
         return MaskTextInputFormatter(
@@ -221,6 +222,10 @@ class _CadastroVeiculos extends State<CadastroVeiculos>{
             mask: '(##) #####-####',
             filter: {"#": RegExp(r'[0-9]')},
             type: MaskAutoCompletionType.lazy);
+      default:
+        return MaskTextInputFormatter(
+          initialText: controller.text.toUpperCase(),
+        );
     }
   }
 
@@ -256,7 +261,7 @@ class _CadastroVeiculos extends State<CadastroVeiculos>{
   }
 
   _adicionarList() async{
-    final database = await openDatabase('cnMaraponga.db');
+    final database = await DB.instance.database;
 
     await database.insert('veiculos', {
       'cor': corController.text,

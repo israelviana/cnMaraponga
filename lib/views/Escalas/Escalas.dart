@@ -9,8 +9,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../components/inputForm.dart';
+import '../../database/db.dart';
 import '../../models/escala.dart';
-import '../../repository/escalas_repository.dart';
+
 
 enum typeModal{
   modal
@@ -40,7 +41,7 @@ class _EscalasState extends State<Escalas> {
 
 
   void _carregarEscalas() async{
-    final database = await openDatabase('cnMaraponga.db');
+    final database = await DB.instance.database;
     List<Map<String, dynamic>> escalas = await database.query('escalas');
     setState(() {
       listEscala = escalas.map((escala) => Escala(id: escala['id'], voluntario:  escala['nome'], data: escala['data'], hora: escala['hora'])).toList();
@@ -49,7 +50,7 @@ class _EscalasState extends State<Escalas> {
   }
 
   _buscarVoluntario(String nome) async{
-    final database = await openDatabase('cnMaraponga.db');
+    final database = await DB.instance.database;
     List<Map<String, dynamic>> escalas = await database.query('escalas', where: '"nome" = ?', whereArgs: ['$nome']);
     setState(() {
       listEscala = escalas.map((escala) => Escala(id: escala['id'], voluntario:  escala['nome'], data: escala['data'], hora: escala['hora'])).toList();
@@ -116,6 +117,7 @@ class _EscalasState extends State<Escalas> {
                           child: ListView.builder(
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
                               itemCount: listEscala.length,
                               itemBuilder: (BuildContext context, int index){
                                 return EscalasListWidget(voluntario: listEscala[index].voluntario, data: listEscala[index].data, hora: listEscala[index].hora, function: () => _modal(typeModal.modal, listEscala[index].id.toString()),);

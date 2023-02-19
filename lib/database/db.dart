@@ -8,7 +8,6 @@ class DB{
 
   static final DB instance = DB._();
 
-
   static Database _dataBase;
 
   get database async{

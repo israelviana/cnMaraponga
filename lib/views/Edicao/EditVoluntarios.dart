@@ -9,6 +9,8 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../database/db.dart';
+
 class EditVoluntario extends StatefulWidget{
   const EditVoluntario({Key key, this.id}) : super(key: key);
   final id;
@@ -34,7 +36,7 @@ class _EditVoluntario extends State<EditVoluntario> {
   }
 
   _findByIdEscala() async{
-    final database = await openDatabase('cnMaraponga.db');
+    final database = await DB.instance.database;
 
     List<Map<String, dynamic>> voluntarios = await database.query('voluntarios', where: '"id" = ?', whereArgs: ['${widget.id}'], limit: 1);
 
@@ -50,7 +52,7 @@ class _EditVoluntario extends State<EditVoluntario> {
 
 
   _updateVoluntario() async{
-    final database = await openDatabase('cnMaraponga.db');
+    final database = await DB.instance.database;
 
     await database.update('voluntarios', {
       'nome': nomeController.text,
@@ -226,11 +228,11 @@ class _EditVoluntario extends State<EditVoluntario> {
 
           }
         },
-        inputFormatters: [_MaskTextInputFormatter(title: title)]
+        inputFormatters: [_MaskTextInputFormatter(title: title, controller: controller)]
     );
   }
 
-  dynamic _MaskTextInputFormatter({title = ""}) {
+  dynamic _MaskTextInputFormatter({title = "", controller}) {
     switch (title) {
       case "CPF":
         return MaskTextInputFormatter(
@@ -244,6 +246,10 @@ class _EditVoluntario extends State<EditVoluntario> {
             mask: '(##) #####-####',
             filter: {"#": RegExp(r'[0-9]')},
             type: MaskAutoCompletionType.lazy);
+      default:
+        return MaskTextInputFormatter(
+          initialText: controller.text.toUpperCase(),
+        );
     }
   }
 

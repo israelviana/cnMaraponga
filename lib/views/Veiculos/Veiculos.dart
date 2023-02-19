@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../components/inputForm.dart';
+import '../../database/db.dart';
 import '../../models/veiculos.dart';
 
 enum typeModal{
@@ -37,7 +38,7 @@ class _VeiculosState extends State<Veiculos> {
 
 
   _carregarVeiculos() async{
-    final database = await openDatabase('cnMaraponga.db');
+    final database = await DB.instance.database;
 
     List<Map<String, dynamic>> veiculos = await database.query('veiculos');
 
@@ -50,7 +51,7 @@ class _VeiculosState extends State<Veiculos> {
   }
 
   _buscarPlaca(String placa) async{
-    final database = await openDatabase('cnMaraponga.db');
+    final database = await DB.instance.database;
 
     List<Map<String, dynamic>> veiculos = await database.query('veiculos', where: '"placa" = ?', whereArgs: ['$placa']);
 
@@ -122,6 +123,7 @@ class _VeiculosState extends State<Veiculos> {
                           child: ListView.builder(
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
                               itemCount: listVeiculo.length,
                               itemBuilder: (BuildContext context, int index){
                                 return VeiculosList(modelo: listVeiculo[index].modelo, cor: listVeiculo[index].cor, placa: listVeiculo[index].placa, condutor: listVeiculo[index].condutor, telefone: listVeiculo[index].telefone, funcao: () => _modal(typeModal.modal, listVeiculo[index].id.toString()));

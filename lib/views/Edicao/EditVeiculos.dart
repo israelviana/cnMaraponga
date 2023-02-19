@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../core/AppImages.dart';
+import '../../database/db.dart';
 
 class EditVeiculos extends StatefulWidget{
   const EditVeiculos({Key key, this.id}) : super(key: key);
@@ -227,11 +228,11 @@ class _EditVeiculos extends State<EditVeiculos>{
               }
           }
         },
-        inputFormatters: [_MaskTextInputFormatter(title: title)]
+        inputFormatters: [_MaskTextInputFormatter(title: title, controller: controller)]
     );
   }
 
-  dynamic _MaskTextInputFormatter({title = ""}) {
+  dynamic _MaskTextInputFormatter({title = "", controller}) {
     switch (title) {
       case "PLACA":
         return MaskTextInputFormatter(
@@ -245,6 +246,10 @@ class _EditVeiculos extends State<EditVeiculos>{
             mask: '(##) #####-####',
             filter: {"#": RegExp(r'[0-9]')},
             type: MaskAutoCompletionType.lazy);
+      default:
+        return MaskTextInputFormatter(
+          initialText: controller.text.toUpperCase(),
+        );
     }
   }
 
@@ -280,7 +285,7 @@ class _EditVeiculos extends State<EditVeiculos>{
   }
 
   _editVeiculo() async{
-    final database = await openDatabase('cnMaraponga.db');
+    final database = await DB.instance.database;
 
     await database.update('veiculos', {
       'cor': corController.text,
