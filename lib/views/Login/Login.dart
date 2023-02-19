@@ -98,7 +98,7 @@ class _LoginState extends State<Login> {
               SizedBox(height: 30),
               naoPossuiConta(),
               SizedBox(height: 15),
-              esqueceuSenha(),
+              /*esqueceuSenha(),*/
             ],
           ),
         )
