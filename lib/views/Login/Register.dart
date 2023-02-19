@@ -1,25 +1,19 @@
 import 'dart:convert';
-import 'package:flutter/services.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:app_transito/models/user.dart';
+
+import 'package:app_transito/models/User.dart';
 import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
-
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Cadastro extends StatefulWidget {
-  const Cadastro({Key key}) : super(key: key);
-
+class Register extends StatefulWidget {
+  const Register({Key key}) : super(key: key);
 
   @override
-  State<Cadastro> createState() => _CadastroState();
+  State<Register> createState() => _RegisterState();
 }
 
-
-class _CadastroState extends State<Cadastro> {
-
+class _RegisterState extends State<Register> {
   final emailController = TextEditingController(text: '');
   final senhaController = TextEditingController(text: '');
   final confirmeSenhaController = TextEditingController(text: '');
@@ -28,7 +22,6 @@ class _CadastroState extends State<Cadastro> {
   final cargoController = TextEditingController(text: '');
   final cpfController = TextEditingController(text: '');
   final _formkey = GlobalKey<FormState>();
-
 
   var _scaffoldKeyLogIn;
 
@@ -45,12 +38,12 @@ class _CadastroState extends State<Cadastro> {
       child: Scaffold(
         backgroundColor: Color(0xFF28282b),
         key: _scaffoldKeyLogIn,
-        body:
-        SingleChildScrollView(
+        body: SingleChildScrollView(
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 child: Column(
                   children: [
                     SizedBox(height: 30),
@@ -60,12 +53,12 @@ class _CadastroState extends State<Cadastro> {
                         /*Image.asset(
                           AppImages.logoMini,
                         ),*/
-                        Text("Cadastro",
+                        Text(
+                          "Cadastro",
                           style: TextStyle(
                               fontFamily: "OpensSans",
                               fontSize: 40,
-                              color: Color(0xFFf0821e)
-                          ),
+                              color: Color(0xFFf0821e)),
                         ),
                       ],
                     ),
@@ -93,8 +86,7 @@ class _CadastroState extends State<Cadastro> {
               style: TextStyle(
                   fontFamily: "OpenSans",
                   fontSize: 18,
-                  color: Color(0xFFf0821e)
-              ),
+                  color: Color(0xFFf0821e)),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 13, bottom: 13),
@@ -105,8 +97,7 @@ class _CadastroState extends State<Cadastro> {
               style: TextStyle(
                   fontFamily: "OpenSans",
                   fontSize: 20,
-                  color: Color(0xFFf0821e)
-              ),
+                  color: Color(0xFFf0821e)),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 13, bottom: 15),
@@ -134,7 +125,8 @@ class _CadastroState extends State<Cadastro> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 13, bottom: 15),
-              child: _InputForm(confirmeSenhaController, "confirmeSenha", "Confirme a Senha"),
+              child: _InputForm(
+                  confirmeSenhaController, "confirmeSenha", "Confirme a Senha"),
             ),
             Text(
               "Telefone",
@@ -170,7 +162,11 @@ class _CadastroState extends State<Cadastro> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 13, bottom: 15),
-              child: _InputForm(cpfController, "CPF", "CPF", ),
+              child: _InputForm(
+                cpfController,
+                "CPF",
+                "CPF",
+              ),
             ),
             SizedBox(height: 20),
             ButtonConfirmar("2"),
@@ -181,36 +177,23 @@ class _CadastroState extends State<Cadastro> {
     );
   }
 
-  Widget _InputForm(TextEditingController controller, String title,
-      String hintText) {
+  Widget _InputForm(
+      TextEditingController controller, String title, String hintText) {
     return TextFormField(
       cursorColor: Color(0xFFf0821e),
       controller: controller,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 5),
         border: OutlineInputBorder(
-            borderSide: BorderSide(
-                width: 4, color: Color(0xFFf0821e)
-            )
-        ),
+            borderSide: BorderSide(width: 4, color: Color(0xFFf0821e))),
         enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                width: 2, color: Color(0xFFf0821e)
-            )
-        ),
+            borderSide: BorderSide(width: 2, color: Color(0xFFf0821e))),
         focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                width: 2, color: Color(0xFFf0821e)
-            )
-        ),
+            borderSide: BorderSide(width: 2, color: Color(0xFFf0821e))),
         hintText: hintText,
-        hintStyle: TextStyle(
-          color: Colors.white70
-        ),
+        hintStyle: TextStyle(color: Colors.white70),
       ),
-      style: TextStyle(
-          color: Colors.white70
-      ),
+      style: TextStyle(color: Colors.white70),
       validator: (value) {
         switch (title) {
           case "EMAIL":
@@ -229,32 +212,34 @@ class _CadastroState extends State<Cadastro> {
             }
             return null;
           case "TELEFONE":
-            if (value.isEmpty){
+            if (value.isEmpty) {
               return "Favor preencher o campo telefone";
             }
             return null;
           case "NOME":
-            if (value.isEmpty){
+            if (value.isEmpty) {
               return "Favor preencher o campo Nome";
             }
             return null;
           case "CARGO":
-            if (value.isEmpty){
+            if (value.isEmpty) {
               return "Favor preecher o cargo nome";
             }
             return null;
           case "CPF":
-            if (value.isEmpty){
+            if (value.isEmpty) {
               return "Favor preencher o campo CPF";
             }
             return null;
         }
       },
-      inputFormatters: [_MaskTextInputFormatter(title: title, controller: controller)],
+      inputFormatters: [
+        _MaskTextInputFormatter(title: title, controller: controller)
+      ],
     );
   }
 
-  dynamic _MaskTextInputFormatter({title = "",  controller}) {
+  dynamic _MaskTextInputFormatter({title = "", controller}) {
     switch (title) {
       case "CPF":
         return MaskTextInputFormatter(
@@ -285,13 +270,13 @@ class _CadastroState extends State<Cadastro> {
         ),
         child: InkWell(
           onTap: () {
-            if(type == "1"){
-              if(_formkey.currentState.validate()){
-                if(senhaController.text != confirmeSenhaController.text){
+            if (type == "1") {
+              if (_formkey.currentState.validate()) {
+                if (senhaController.text != confirmeSenhaController.text) {
                   Navigator.pop(contextModal);
                   ScalffoldMensage.messageErrorLogin(
                       "SENHAS DIFERENTES!", _scaffoldKeyLogIn);
-                }else{
+                } else {
                   _doSign();
                   Navigator.pop(contextModal);
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -306,7 +291,7 @@ class _CadastroState extends State<Cadastro> {
                               child: Text("Cadastro realizado com sucesso!"))
                         ],
                       ),
-                      backgroundColor:  Color(0xFF4FBD2D),
+                      backgroundColor: Color(0xFF4FBD2D),
                     ),
                   );
                   Future.delayed(Duration(seconds: 2)).then((_) async {
@@ -314,8 +299,8 @@ class _CadastroState extends State<Cadastro> {
                   });
                 }
               }
-            }else if(type == "2"){
-              if(_formkey.currentState.validate()){
+            } else if (type == "2") {
+              if (_formkey.currentState.validate()) {
                 _modal();
               }
             }
@@ -328,27 +313,23 @@ class _CadastroState extends State<Cadastro> {
                 style: TextStyle(
                     fontFamily: "OpensSans",
                     fontSize: 15,
-                    fontWeight: FontWeight.bold
-                ),
+                    fontWeight: FontWeight.bold),
               )
             ],
           ),
-        )
-    );
+        ));
   }
 
-  void _doSign(){
+  void _doSign() {
     User newUser = User(
-      name: nomeController.text,
-      mail: emailController.text,
-      password: senhaController.text,
-      keepOn: true
-    );
+        name: nomeController.text,
+        mail: emailController.text,
+        password: senhaController.text,
+        keepOn: true);
     _saveUser(newUser);
-
   }
 
-  void _saveUser(User user) async{
+  void _saveUser(User user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("LoginUserInfos", json.encode(user.toJson()));
   }
@@ -387,8 +368,11 @@ class _CadastroState extends State<Cadastro> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text("No atual momento só é possível \n cadastrar um usuário por vez!",
-                                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
+                                  Text(
+                                      "No atual momento só é possível \n cadastrar um usuário por vez!",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 18)),
                                   SizedBox(height: 50),
                                   ButtonConfirmar("1"),
                                 ],
@@ -413,8 +397,7 @@ class _CadastroState extends State<Cadastro> {
             bottomRight: const Radius.circular(0.0),
             topLeft: const Radius.circular(8.0),
             topRight: const Radius.circular(8.0),
-          )
-      ),
+          )),
       height: 50,
       child: Stack(
         children: [
@@ -422,24 +405,27 @@ class _CadastroState extends State<Cadastro> {
               right: 20,
               top: 12,
               child: InkWell(
-                onTap: (){
+                onTap: () {
                   Navigator.pop(context);
                 },
                 child: Container(
                     child: Icon(
-                      Icons.close,
-                      color: Color(0xFFf0821e),
-                      size: 30,
-                    )),
-              )
-          ),
+                  Icons.close,
+                  color: Color(0xFFf0821e),
+                  size: 30,
+                )),
+              )),
           Padding(
             padding: EdgeInsets.only(top: 17),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("Aviso!", style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xFFf0821e), fontSize: 14)),
+                Text("Aviso!",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFFf0821e),
+                        fontSize: 14)),
               ],
             ),
           ),
@@ -447,6 +433,4 @@ class _CadastroState extends State<Cadastro> {
       ),
     );
   }
-
 }
-

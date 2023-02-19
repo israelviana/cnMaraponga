@@ -1,65 +1,63 @@
-
 import 'dart:convert';
 
 import 'package:app_transito/core/AppImages.dart';
-import 'package:app_transito/models/escala.dart';
+import 'package:app_transito/models/Volunteers.dart';
 import 'package:app_transito/router.dart';
 import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../database/db.dart';
 
-class EditEscalas extends StatefulWidget {
-  const EditEscalas({Key key, this.id}) : super(key: key);
+class EditVolunteers extends StatefulWidget{
+  const EditVolunteers({Key key, this.id}) : super(key: key);
   final id;
 
-  @override
-  State<EditEscalas> createState() => _EditEscalasState();
-
+  State<EditVolunteers> createState() => _EditVolunteers();
 }
-class _EditEscalasState extends State<EditEscalas>{
-  final _formkey = GlobalKey<FormState>();
-  final escalaControler = TextEditingController(text: '');
-  final dataController = TextEditingController(text: '');
-  final horaController = TextEditingController(text: '');
 
-  List<Escala> listaDeEscala = [];
+class _EditVolunteers extends State<EditVolunteers> {
+  final _formkey = GlobalKey<FormState>();
+  final nomeController = TextEditingController(text: '');
+  final cpfController = TextEditingController(text: '');
+  final telefoneController = TextEditingController(text: '');
+
+  List<Voluntario> listaVoluntario = [];
 
   var _scaffoldKeyLogIn;
+
+
 
   @override
   void initState(){
     _findByIdEscala();
-
   }
 
   _findByIdEscala() async{
     final database = await DB.instance.database;
 
-    List<Map<String, dynamic>> escalas = await database.query('escalas', where: '"id" = ?', whereArgs: ['${widget.id}'], limit: 1);
+    List<Map<String, dynamic>> voluntarios = await database.query('voluntarios', where: '"id" = ?', whereArgs: ['${widget.id}'], limit: 1);
 
     setState(() {
-      listaDeEscala = escalas.map((escala) => Escala(id: escala['id'], voluntario:  escala['nome'], data: escala['data'], hora: escala['hora'])).toList();
-      escalaControler.text = listaDeEscala[0].voluntario;
-      dataController.text = listaDeEscala[0].data;
-      horaController.text = listaDeEscala[0].hora;
+      listaVoluntario = voluntarios.map((voluntario) => Voluntario(id: voluntario['id'], telefone: voluntario['telefone'], nome: voluntario['nome'], cpf: voluntario['cpf'])).toList();
+      nomeController.text = listaVoluntario[0].nome;
+      cpfController.text = listaVoluntario[0].cpf;
+      telefoneController.text = listaVoluntario[0].telefone;
     });
 
     database.close();
   }
 
-  _updateEscala() async {
 
-    final database = await openDatabase('cnMaraponga.db');
+  _updateVoluntario() async{
+    final database = await DB.instance.database;
 
-    await database.update('escalas', {
-      'nome': escalaControler.text,
-      'data': dataController.text,
-      'hora': horaController.text
+    await database.update('voluntarios', {
+      'nome': nomeController.text,
+      'cpf': cpfController.text,
+      'telefone': telefoneController.text
     },
       where: '"id" = ?',
       whereArgs: ['${widget.id}']
@@ -76,7 +74,7 @@ class _EditEscalasState extends State<EditEscalas>{
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Flexible(
-                child: Text("Escala editada com sucesso!"))
+                child: Text("Voluntario editado com sucesso!"))
           ],
         ),
         backgroundColor:  Color(0xFF4FBD2D),
@@ -84,12 +82,14 @@ class _EditEscalasState extends State<EditEscalas>{
     );
 
     Future.delayed(Duration(milliseconds: 800)).then((_) async {
-      Navigator.popAndPushNamed(context, escalasRoute);
+      Navigator.popAndPushNamed(context, volunteersRoute);
     });
+
   }
 
+
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKeyLogIn,
@@ -106,7 +106,7 @@ class _EditEscalasState extends State<EditEscalas>{
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Edição de Escalas",
+                        Text("Edição de Voluntário",
                           style: TextStyle(
                               fontFamily: "OpensSans",
                               fontSize: 28,
@@ -115,7 +115,7 @@ class _EditEscalasState extends State<EditEscalas>{
                         ),
                       ],
                     ),
-                    ButtonEscalas()
+                    ButtonVoluntario()
                   ],
                 ),
               ),
@@ -126,15 +126,15 @@ class _EditEscalasState extends State<EditEscalas>{
     );
   }
 
-  Widget ButtonEscalas(){
+  Widget ButtonVoluntario(){
     return Form(
       key: _formkey,
       child: Padding(
-        padding: const EdgeInsets.only(top: 58),
+        padding: const EdgeInsets.only(top: 35),
         child: Column(
           children: [
             Text(
-              "Voluntário:",
+              "Nome:",
               style: TextStyle(
                 fontFamily: 'OpenSans',
                 fontSize: 24,
@@ -142,11 +142,12 @@ class _EditEscalasState extends State<EditEscalas>{
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 13),
-              child: _InputForm(escalaControler, 'VOLUNTARIO', 'Volutário'),
+              padding: const EdgeInsets.only(top: 20, bottom: 10),
+              child: _InputForm(nomeController, 'NOME', 'Nome'),
             ),
+            SizedBox(height: 20),
             Text(
-              "Data: ",
+              "CPF: ",
               style: TextStyle(
                   fontFamily: 'OpenSans',
                   fontSize: 24,
@@ -154,11 +155,12 @@ class _EditEscalasState extends State<EditEscalas>{
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 20,bottom: 13),
-              child: _InputForm(dataController, 'DATA', 'Data'),
+              padding: const EdgeInsets.only(top: 20,bottom: 10),
+              child: _InputForm(cpfController, 'CPF', 'CPF'),
             ),
+            SizedBox(height: 20),
             Text(
-              "Hora: ",
+              "Telefone: ",
               style: TextStyle(
                   fontFamily: 'OpenSans',
                   fontSize: 24,
@@ -166,8 +168,8 @@ class _EditEscalasState extends State<EditEscalas>{
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 20,bottom: 15),
-              child: _InputForm(horaController, 'HORA', 'hora'),
+              padding: const EdgeInsets.only(top: 20,bottom: 10),
+              child: _InputForm(telefoneController, 'TELEFONE', 'Telefone'),
             ),
             SizedBox(height: 20),
             ButtonConfirmar(),
@@ -209,45 +211,46 @@ class _EditEscalasState extends State<EditEscalas>{
         ),
         validator: (value) {
           switch (title) {
-            case "VOLUNTARIO":
+            case "NOME":
               if (value.isEmpty) {
-                return "Favor preencher o campo voluntário";
+                return "Favor preencher o campo nome.";
               }
               return null;
-            case "DATA":
+            case "CPF":
               if (value.isEmpty) {
-                return "Favor preencher o campo data";
+                return "Favor preencher o campo CPF.";
               }
               return null;
-            case "HORA":
+            case "TELEFONE":
               if (value.isEmpty){
-                return "Favor preencher o campo hora";
+                return "Favor preencher o campo telefone.";
               }
+
           }
         },
-        inputFormatters: [_MaskTextInputFormatter(title: title)]
+        inputFormatters: [_MaskTextInputFormatter(title: title, controller: controller)]
     );
   }
 
-  dynamic _MaskTextInputFormatter({title = ""}) {
+  dynamic _MaskTextInputFormatter({title = "", controller}) {
     switch (title) {
-      case "DATA":
+      case "CPF":
         return MaskTextInputFormatter(
-            initialText: dataController.text,
-            mask: '##/##/####',
+            initialText: cpfController.text,
+            mask: '###.###.###-##',
             filter: {"#": RegExp(r'[0-9]')},
             type: MaskAutoCompletionType.lazy);
-      case "HORA":
+      case "TELEFONE":
         return MaskTextInputFormatter(
-            initialText: horaController.text,
-            mask: '##:##',
+            initialText: telefoneController.text,
+            mask: '(##) #####-####',
             filter: {"#": RegExp(r'[0-9]')},
             type: MaskAutoCompletionType.lazy);
       default:
         return MaskTextInputFormatter(
-            initialText: escalaControler.text.toUpperCase());
+          initialText: controller.text.toUpperCase(),
+        );
     }
-
   }
 
   Widget ButtonConfirmar(){
@@ -260,8 +263,8 @@ class _EditEscalasState extends State<EditEscalas>{
       ),
       child: InkWell(
         onTap: (){
-          if(_formkey.currentState.validate()) {
-            _updateEscala();
+          if (_formkey.currentState.validate()) {
+            _updateVoluntario();
           }
         },
         child: Row(
@@ -282,7 +285,3 @@ class _EditEscalasState extends State<EditEscalas>{
   }
 
 }
-
-
-
-

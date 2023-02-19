@@ -1,38 +1,37 @@
-import 'package:app_transito/views/Edicao/EditEscalas.dart';
-import 'package:app_transito/views/Edicao/EditVeiculos.dart';
-import 'package:app_transito/views/Edicao/EditVoluntarios.dart';
-import 'package:app_transito/views/Escalas/Escalas.dart';
-import 'package:app_transito/views/Login/Cadastro.dart';
-import 'package:app_transito/views/Login/EsqueceuSenha.dart';
+import 'package:app_transito/views/Registers/Scales.dart';
+import 'package:app_transito/views/Registers/Vehicles.dart';
+import 'package:app_transito/views/Registers/Volunteers.dart';
+import 'package:app_transito/views/Edits/Scales.dart';
+import 'package:app_transito/views/Edits/Vehicles.dart';
+import 'package:app_transito/views/Edits/Volunteers.dart';
+import 'package:app_transito/views/Scales/Scales.dart';
+import 'package:app_transito/views/Home/Initial.dart';
+import 'package:app_transito/views/Login/Register.dart';
 import 'package:app_transito/views/Login/Login.dart';
-import 'package:app_transito/views/Cadastros/CadastroEscalas.dart';
-import 'package:app_transito/views/Home/Inicial.dart';
-import 'package:app_transito/views/Cadastros/CadastroVeiculos.dart';
-import 'package:app_transito/views/Cadastros/CadastroVoluntario.dart';
-import 'package:app_transito/views/Veiculos/Veiculos.dart';
-import 'package:app_transito/views/Voluntarios/Voluntarios.dart';
+import 'package:app_transito/views/Vehicles/Vehicles.dart';
+import 'package:app_transito/views/Volunteers/Volunteers.dart';
 import 'package:flutter/material.dart';
 
 //Login
 const String loginRoute = '/login';
-const String esqueceuSenhaRoute = '/esqueceuSenha';
-const String cadastroRoute = '/cadastro';
-const String inicialRoute = '/inicial';
+const String forgetPasswordRoute = '/forgetPassoword';
+const String registerRoute = '/register';
+const String initialRoute = '/initial';
 
-//Escalas
-const String escalasRoute = '/escalas';
-const String cadastroEscalasRoute = '/cadastroEscalas';
-const String edicaoEscalaRoute = '/edicaoEscala';
+//Scales
+const String scalesRoute = '/scales';
+const String registerScalesRoute = '/registerScales';
+const String editScalesRoute = '/editScales';
 
-//Veiculos
-const String veiculosRoute = '/veiculos';
-const String cadastroVeiculosRoute = '/cadastroVeiculos';
-const String edicaoVeiculoRoute = '/edicaoVeiculo';
+//Vehicles
+const String vehiclesRoute = '/vehicles';
+const String registerVehiclesRoute = '/registerVehicles';
+const String editVehiclesRoute = '/editVehicles';
 
-//Voluntarios
-const String voluntariosRoute = '/voluntarios';
-const String cadastroVoluntarioRoute = '/cadastroVoluntario';
-const String edicaoVoluntarioRoute = '/edicaoVoluntario';
+//Volunteers
+const String volunteersRoute = '/volunteers';
+const String registerVolunteersRoute = '/registerVolunteers';
+const String editVolunteersRoute = '/editVolunteers';
 
 
 
@@ -42,33 +41,31 @@ class RouterCn{
       switch (setting.name){
         case loginRoute:
           return MaterialPageRoute(builder: (_) => Login());
-        case esqueceuSenhaRoute:
-          return MaterialPageRoute(builder: (_) => EsqueceuSenha());
-        case cadastroRoute:
-          return MaterialPageRoute(builder:  (_) => Cadastro());
-        case inicialRoute:
-          return MaterialPageRoute(builder: (_) => Inicial());
-        case cadastroEscalasRoute:
-          return MaterialPageRoute(builder: (_) => CadastroEscalas());
-        case cadastroVeiculosRoute:
-          return MaterialPageRoute(builder: (_) => CadastroVeiculos());
-        case cadastroVoluntarioRoute:
-          return MaterialPageRoute(builder: (_) => CadastroVoluntario());
-        case escalasRoute:
-          return MaterialPageRoute(builder: (_) => Escalas());
-        case veiculosRoute:
-          return MaterialPageRoute(builder: (_) => Veiculos());
-        case voluntariosRoute:
-          return MaterialPageRoute(builder: (_) => Voluntarios());
-        case edicaoVeiculoRoute:
+        case registerRoute:
+          return MaterialPageRoute(builder:  (_) => Register());
+        case initialRoute:
+          return MaterialPageRoute(builder: (_) => Initial());
+        case registerScalesRoute:
+          return MaterialPageRoute(builder: (_) => RegisterScales());
+        case registerVehiclesRoute:
+          return MaterialPageRoute(builder: (_) => RegisterVehicles());
+        case registerVolunteersRoute:
+          return MaterialPageRoute(builder: (_) => RegisterVolunteers());
+        case scalesRoute:
+          return MaterialPageRoute(builder: (_) => Scales());
+        case vehiclesRoute:
+          return MaterialPageRoute(builder: (_) => Vehicles());
+        case volunteersRoute:
+          return MaterialPageRoute(builder: (_) => Volunteers());
+        case editVehiclesRoute:
           String id = setting.arguments;
-          return MaterialPageRoute(builder: (_) => EditVeiculos(id: id));
-        case edicaoEscalaRoute:
+          return MaterialPageRoute(builder: (_) => EditVehicles(id: id));
+        case editScalesRoute:
           String id = setting.arguments;
-          return MaterialPageRoute(builder: (_) => EditEscalas(id: id));
-        case edicaoVoluntarioRoute:
+          return MaterialPageRoute(builder: (_) => EditScales(id: id));
+        case editVolunteersRoute:
           String id = setting.arguments;
-          return MaterialPageRoute(builder: (_) => EditVoluntario(id: id));
+          return MaterialPageRoute(builder: (_) => EditVolunteers(id: id));
       }
     };
   }

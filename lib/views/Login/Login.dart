@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 
-import '../../models/user.dart';
+import '../../models/User.dart';
 
 class Login extends StatefulWidget {
   const Login({Key key}) : super(key: key);
@@ -238,7 +238,7 @@ class _LoginState extends State<Login> {
   Widget naoPossuiConta(){
     return InkWell(
       onTap: (){
-        Navigator.pushNamed(context, cadastroRoute);
+        Navigator.pushNamed(context, registerRoute);
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -256,26 +256,7 @@ class _LoginState extends State<Login> {
       ),
     );
   }
-  Widget esqueceuSenha(){
-    return InkWell(
-      onTap: (){
-        Navigator.pushNamed(context, esqueceuSenhaRoute);
-      },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "Esqueceu a senha?",
-            style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
-                color: Color(0xFFf0821e)
-            ),
-          )
-        ],
-      ),
-    );
-  }
+
 
   _doLogin() async{
     String mail = this.emailController.text;
@@ -301,7 +282,7 @@ class _LoginState extends State<Login> {
         ),
       );
       Future.delayed(Duration(milliseconds: 800)).then((_) async {
-        Navigator.pushNamed(context, inicialRoute);
+        Navigator.pushNamed(context, initialRoute);
       });
     }else{
       FocusScope.of(context).unfocus();

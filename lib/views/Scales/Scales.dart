@@ -1,70 +1,57 @@
-import 'dart:convert';
 
-import 'package:app_transito/models/voluntario.dart';
 import 'package:app_transito/router.dart';
-import 'package:app_transito/views/Voluntarios/Widgets/VoluntariosList.dart';
+import 'package:app_transito/views/Scales/Widgets/EscalasListWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
-
 import '../../components/inputForm.dart';
 import '../../database/db.dart';
+import '../../models/Scales.dart';
+
 
 enum typeModal{
   modal
 }
 
-class Voluntarios extends StatefulWidget {
-  const Voluntarios({Key key}) : super(key: key);
+class Scales extends StatefulWidget {
+  const Scales({Key key}) : super(key: key);
 
   @override
-  State<Voluntarios> createState() => _VoluntariosState();
+  State<Scales> createState() => _ScalesState();
 }
 
-class _VoluntariosState extends State<Voluntarios> {
 
-  List<Voluntario> listaVoluntarios = [];
+class _ScalesState extends State<Scales> {
+  Future requisitionEscalas;
+  List<Escala> listEscala = <Escala>[];
 
+  final nomeController = TextEditingController(text: '');
+  String nome;
 
-  Future requisitionVoluntario;
-
-
-  final cpfController = TextEditingController(text: '');
-
-  String cpf;
 
   @override
   void initState(){
-    _carregarVoluntarios();
-    cpfController.text = "";
+    _carregarEscalas();
+    nomeController.text = "";
   }
 
 
-  _carregarVoluntarios() async{
+  void _carregarEscalas() async{
     final database = await DB.instance.database;
-
-    List<Map<String, dynamic>> voluntarios = await database.query('voluntarios');
-
+    List<Map<String, dynamic>> escalas = await database.query('escalas');
     setState(() {
-      listaVoluntarios = voluntarios.map((voluntario) => Voluntario(id: voluntario['id'], telefone: voluntario['telefone'], nome: voluntario['nome'], cpf: voluntario['cpf'])).toList();
+      listEscala = escalas.map((escala) => Escala(id: escala['id'], voluntario:  escala['nome'], data: escala['data'], hora: escala['hora'])).toList();
     });
-
     database.close();
   }
 
-  _buscarCpf(String cpf) async{
+  _buscarVoluntario(String nome) async{
     final database = await DB.instance.database;
-
-    List<Map<String, dynamic>> voluntarios = await database.query('voluntarios',where: '"cpf" = ?', whereArgs: ['$cpf']);
-
+    List<Map<String, dynamic>> escalas = await database.query('escalas', where: '"nome" = ?', whereArgs: ['$nome']);
     setState(() {
-      listaVoluntarios = voluntarios.map((voluntario) => Voluntario(id: voluntario['id'], telefone: voluntario['telefone'], nome: voluntario['nome'], cpf: voluntario['cpf'])).toList();
+      listEscala = escalas.map((escala) => Escala(id: escala['id'], voluntario:  escala['nome'], data: escala['data'], hora: escala['hora'])).toList();
     });
-
     database.close();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -74,12 +61,13 @@ class _VoluntariosState extends State<Voluntarios> {
         body: RefreshIndicator(
           onRefresh: () => Future.delayed(Duration(milliseconds: 500), () => initState()),
           child: CustomScrollView(
-            slivers: [
+            slivers: <Widget>[
               SliverList(
                   delegate: SliverChildListDelegate([
                     Column(
                       children: [
-                        Text("VOLUNTÁRIOS", style: TextStyle(
+                        SizedBox(height: 20),
+                        Text("ESCALAS", style: TextStyle(
                             fontFamily: "OpensSans",
                             fontSize: 40,
                             color: Color(0xFFf0821e)
@@ -89,21 +77,21 @@ class _VoluntariosState extends State<Voluntarios> {
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Row(
                             children: [
-                              Flexible(child: InputForm(title: 'Digite o CPF pelo qual deseja buscar', mask: "CPF", type: "TEXT", controller: cpfController,)),
+                              Flexible(child: InputForm(title: 'Digite o VOLUNTARIO pelo qual deseja buscar', type: "TEXT", controller: nomeController)),
                               InkWell(
                                 onTap: (){
-                                  cpf = cpfController.text;
-                                  if(cpf == ""){
+                                  nome = nomeController.text;
+                                  if(nome == ""){
                                     initState();
                                   }else{
-                                    _buscarCpf(cpf);
+                                    _buscarVoluntario(nome);
                                   }
                                 },
                                 child: Container(
                                   width: 30,
                                   height: 30,
                                   decoration: BoxDecoration(
-                                    color: Color(0xFFf0821e)
+                                      color: Color(0xFFf0821e)
                                   ),
                                   child: Icon(Icons.search),
                                 ),
@@ -111,34 +99,34 @@ class _VoluntariosState extends State<Voluntarios> {
                             ],
                           ),
                         ),
-                        listaVoluntarios.length == 0 ?
-                            Padding(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: Center(child: Text("Não possui dados de voluntários!", style: TextStyle(
-                                  fontFamily: "OpensSans",
-                                  fontSize: 20,
-                                  color: Color(0xFFf0821e)
-                              ))),
-                            ) :
+                        listEscala.length == 0 ? Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Center(child: Text("Não possui dados de escalas!!!", style: TextStyle(
+                              fontFamily: "OpensSans",
+                              fontSize: 20,
+                              color: Color(0xFFf0821e)
+                          ))),
+                        ) :
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: ListView.builder(
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
-                              itemCount: listaVoluntarios.length,
+                              itemCount: listEscala.length,
                               itemBuilder: (BuildContext context, int index){
-                                return VoluntariosList(nome: listaVoluntarios[index].nome, cpf: listaVoluntarios[index].cpf, telefone: listaVoluntarios[index].telefone, function: () => _modal(typeModal.modal, listaVoluntarios[index].id.toString()));
-                          }),
-                        )
-                      ])
-            ])
-              )
+                                return EscalasListWidget(voluntario: listEscala[index].voluntario, data: listEscala[index].data, hora: listEscala[index].hora, function: () => _modal(typeModal.modal, listEscala[index].id.toString()),);
+                              }
+                          ),
+                        ),
+                      ],
+                    ),
+                  ]))
             ],
           ),
+        ),
         )
-      ),
-    );
+      );
   }
 
 
@@ -219,9 +207,9 @@ class _VoluntariosState extends State<Voluntarios> {
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  ButtonOptions("Excluir voluntário", () => _excluirVoluntario(id)),
+                                  ButtonOptions("Excluir escala", () => _excluirEscala(id)),
                                   SizedBox(height: 64),
-                                  ButtonOptions("Editar voluntário", () => Navigator.popAndPushNamed(context, edicaoVoluntarioRoute, arguments: id)),
+                                  ButtonOptions("Editar escala", () => Navigator.popAndPushNamed(context, editScalesRoute, arguments: id)),
                                 ],
                               ),
                             ],
@@ -235,10 +223,10 @@ class _VoluntariosState extends State<Voluntarios> {
     );
   }
 
-  _excluirVoluntario(String id) async{
+  _excluirEscala(String id) async{
     final database = await openDatabase('cnMaraponga.db');
 
-    await database.delete('voluntarios', where: '"id" = ?', whereArgs: ['$id']);
+    await database.delete('escalas', where: '"id" = ?', whereArgs: ['$id']);
 
     initState();
 
@@ -251,10 +239,10 @@ class _VoluntariosState extends State<Voluntarios> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Flexible(
-                child: Text("Voluntário excluido com sucesso!"))
+                child: Text("Escala excluida com sucesso!"))
           ],
         ),
-        backgroundColor: Color(0xFF4FBD2D),
+        backgroundColor:  Color(0xFF4FBD2D),
       ),
     );
     database.close();
@@ -291,3 +279,5 @@ class _VoluntariosState extends State<Voluntarios> {
   }
 
 }
+
+

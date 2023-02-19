@@ -2,7 +2,8 @@
 import 'dart:convert';
 
 import 'package:app_transito/core/AppImages.dart';
-import 'package:app_transito/models/escala.dart';
+import 'package:app_transito/models/Scales.dart';
+import 'package:app_transito/router.dart';
 import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -12,27 +13,79 @@ import 'package:sqflite/sqflite.dart';
 
 import '../../database/db.dart';
 
-class CadastroEscalas extends StatefulWidget {
-  const CadastroEscalas({Key key}) : super(key: key);
+class EditScales extends StatefulWidget {
+  const EditScales({Key key, this.id}) : super(key: key);
+  final id;
 
   @override
-  State<CadastroEscalas> createState() => _CadastroEscalastate();
+  State<EditScales> createState() => _EditScalesState();
 
 }
-class _CadastroEscalastate extends State<CadastroEscalas>{
+class _EditScalesState extends State<EditScales>{
   final _formkey = GlobalKey<FormState>();
   final escalaControler = TextEditingController(text: '');
   final dataController = TextEditingController(text: '');
   final horaController = TextEditingController(text: '');
 
   List<Escala> listaDeEscala = [];
-  
+
   var _scaffoldKeyLogIn;
 
   @override
   void initState(){
-    super.initState();
-    /*_loadListEscala();*/
+    _findByIdEscala();
+
+  }
+
+  _findByIdEscala() async{
+    final database = await DB.instance.database;
+
+    List<Map<String, dynamic>> escalas = await database.query('escalas', where: '"id" = ?', whereArgs: ['${widget.id}'], limit: 1);
+
+    setState(() {
+      listaDeEscala = escalas.map((escala) => Escala(id: escala['id'], voluntario:  escala['nome'], data: escala['data'], hora: escala['hora'])).toList();
+      escalaControler.text = listaDeEscala[0].voluntario;
+      dataController.text = listaDeEscala[0].data;
+      horaController.text = listaDeEscala[0].hora;
+    });
+
+    database.close();
+  }
+
+  _updateEscala() async {
+
+    final database = await openDatabase('cnMaraponga.db');
+
+    await database.update('escalas', {
+      'nome': escalaControler.text,
+      'data': dataController.text,
+      'hora': horaController.text
+    },
+      where: '"id" = ?',
+      whereArgs: ['${widget.id}']
+    );
+
+    database.close();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        dismissDirection: DismissDirection.down,
+        elevation: 5,
+        behavior: SnackBarBehavior.floating,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(
+                child: Text("Escala editada com sucesso!"))
+          ],
+        ),
+        backgroundColor:  Color(0xFF4FBD2D),
+      ),
+    );
+
+    Future.delayed(Duration(milliseconds: 800)).then((_) async {
+      Navigator.popAndPushNamed(context, scalesRoute);
+    });
   }
 
   @override
@@ -53,7 +106,7 @@ class _CadastroEscalastate extends State<CadastroEscalas>{
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Cadastro de Escalas",
+                        Text("Edição de Escalas",
                           style: TextStyle(
                               fontFamily: "OpensSans",
                               fontSize: 28,
@@ -62,7 +115,7 @@ class _CadastroEscalastate extends State<CadastroEscalas>{
                         ),
                       ],
                     ),
-                  ButtonEscalas()
+                    ButtonEscalas()
                   ],
                 ),
               ),
@@ -73,7 +126,7 @@ class _CadastroEscalastate extends State<CadastroEscalas>{
     );
   }
 
-Widget ButtonEscalas(){
+  Widget ButtonEscalas(){
     return Form(
       key: _formkey,
       child: Padding(
@@ -95,26 +148,26 @@ Widget ButtonEscalas(){
             Text(
               "Data: ",
               style: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 24,
-                color: Color(0xFFf0821e)
+                  fontFamily: 'OpenSans',
+                  fontSize: 24,
+                  color: Color(0xFFf0821e)
               ),
             ),
             Padding(
-                padding: const EdgeInsets.only(top: 20,bottom: 13),
-            child: _InputForm(dataController, 'DATA', 'Data'),
+              padding: const EdgeInsets.only(top: 20,bottom: 13),
+              child: _InputForm(dataController, 'DATA', 'Data'),
             ),
             Text(
               "Hora: ",
               style: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 24,
-                color: Color(0xFFf0821e)
+                  fontFamily: 'OpenSans',
+                  fontSize: 24,
+                  color: Color(0xFFf0821e)
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20,bottom: 15),
-            child: _InputForm(horaController, 'HORA', 'hora'),
+              child: _InputForm(horaController, 'HORA', 'hora'),
             ),
             SizedBox(height: 20),
             ButtonConfirmar(),
@@ -122,56 +175,56 @@ Widget ButtonEscalas(){
         ),
       ),
     );
-}
+  }
 
   Widget _InputForm(TextEditingController controller, String title,
       String hintText) {
     return TextFormField(
-      cursorColor: Color(0xFFf0821e),
-      controller: controller,
-      decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 5),
-        border: OutlineInputBorder(
-            borderSide: BorderSide(
-                width: 4, color: Color(0xFFf0821e)
-            )
+        cursorColor: Color(0xFFf0821e),
+        controller: controller,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 5),
+          border: OutlineInputBorder(
+              borderSide: BorderSide(
+                  width: 4, color: Color(0xFFf0821e)
+              )
+          ),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  width: 2, color: Color(0xFFf0821e)
+              )
+          ),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  width: 2, color: Color(0xFFf0821e)
+              )
+          ),
+          hintText: hintText,
+          hintStyle: TextStyle(
+              color: Colors.white70
+          ),
         ),
-        enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                width: 2, color: Color(0xFFf0821e)
-            )
-        ),
-        focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                width: 2, color: Color(0xFFf0821e)
-            )
-        ),
-        hintText: hintText,
-        hintStyle: TextStyle(
+        style: TextStyle(
             color: Colors.white70
         ),
-      ),
-      style: TextStyle(
-          color: Colors.white70
-      ),
-      validator: (value) {
-        switch (title) {
-          case "VOLUNTARIO":
-            if (value.isEmpty) {
-              return "Favor preencher o campo voluntário";
-            }
-            return null;
-          case "DATA":
-            if (value.isEmpty) {
-              return "Favor preencher o campo data";
-            }
-            return null;
-          case "HORA":
-            if (value.isEmpty){
-              return "Favor preencher o campo hora";
-            }
-        }
-      },
+        validator: (value) {
+          switch (title) {
+            case "VOLUNTARIO":
+              if (value.isEmpty) {
+                return "Favor preencher o campo voluntário";
+              }
+              return null;
+            case "DATA":
+              if (value.isEmpty) {
+                return "Favor preencher o campo data";
+              }
+              return null;
+            case "HORA":
+              if (value.isEmpty){
+                return "Favor preencher o campo hora";
+              }
+          }
+        },
         inputFormatters: [_MaskTextInputFormatter(title: title)]
     );
   }
@@ -208,18 +261,18 @@ Widget ButtonEscalas(){
       child: InkWell(
         onTap: (){
           if(_formkey.currentState.validate()) {
-            _cadastrarEscala();
+            _updateEscala();
           }
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Confirmar",
+              "Editar",
               style: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 15,
-                fontWeight: FontWeight.bold
+                  fontFamily: 'OpenSans',
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold
               ),
             )
           ],
@@ -227,41 +280,6 @@ Widget ButtonEscalas(){
       ),
     );
   }
-
-  _cadastrarEscala() async {
-
-    final database = await DB.instance.database;
-
-
-    await database.insert('escalas', {
-      'nome': escalaControler.text,
-      'data': dataController.text,
-      'hora': horaController.text
-    });
-
-    database.close();
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        dismissDirection: DismissDirection.down,
-        elevation: 5,
-        behavior: SnackBarBehavior.floating,
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Flexible(
-                child: Text("Escala cadastrada com sucesso!!"))
-          ],
-        ),
-        backgroundColor:  Color(0xFF4FBD2D),
-      ),
-    );
-
-    Future.delayed(Duration(milliseconds: 800)).then((_) async {
-      Navigator.pop(context);
-    });
-  }
-
 
 }
 

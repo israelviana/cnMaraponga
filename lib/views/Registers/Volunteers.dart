@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:app_transito/core/AppImages.dart';
-import 'package:app_transito/models/voluntario.dart';
+import 'package:app_transito/models/Volunteers.dart';
 import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -10,13 +10,13 @@ import 'package:sqflite/sqflite.dart';
 
 import '../../database/db.dart';
 
-class CadastroVoluntario extends StatefulWidget{
-  const CadastroVoluntario({Key key}) : super(key: key);
+class RegisterVolunteers extends StatefulWidget{
+  const RegisterVolunteers({Key key}) : super(key: key);
 
-  State<CadastroVoluntario> createState() => _CadastroVoluntario();
+  State<RegisterVolunteers> createState() => _RegisterVolunteers();
 }
 
-class _CadastroVoluntario extends State<CadastroVoluntario> {
+class _RegisterVolunteers extends State<RegisterVolunteers> {
   final _formkey = GlobalKey<FormState>();
   final nomeController = TextEditingController(text: '');
   final cpfController = TextEditingController(text: '');

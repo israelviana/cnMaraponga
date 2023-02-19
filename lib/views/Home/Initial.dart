@@ -1,21 +1,20 @@
 import 'package:app_transito/core/AppImages.dart';
 import 'package:app_transito/router.dart';
-import 'package:app_transito/views/Cadastros/CadastroEscalas.dart';
 import 'package:flutter/material.dart';
 
 enum TypeModalInitial{
   modal
 }
 
-class Inicial extends StatefulWidget{
-  const Inicial({Key key}) : super(key: key);
+class Initial extends StatefulWidget{
+  const Initial({Key key}) : super(key: key);
 
   @override
-  State<Inicial> createState() => _Inicial();
+  State<Initial> createState() => _Initial();
 }
 
 
-class _Inicial extends State<Inicial>{
+class _Initial extends State<Initial>{
   final _formKey = GlobalKey<FormState>();
   BuildContext contextModalEscalas;
 
@@ -184,9 +183,9 @@ class _Inicial extends State<Inicial>{
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  type == "escala" ? ButtonOptions("Cadastrar escalas", cadastroEscalasRoute, context) : type == "veiculo" ? ButtonOptions("Cadastrar veículos", cadastroVeiculosRoute, context) : ButtonOptions("Cadastrar voluntário", cadastroVoluntarioRoute, context),
+                                  type == "escala" ? ButtonOptions("Cadastrar escalas", registerScalesRoute, context) : type == "veiculo" ? ButtonOptions("Cadastrar veículos", registerVehiclesRoute, context) : ButtonOptions("Cadastrar voluntário", registerVolunteersRoute, context),
                                   SizedBox(height: 64),
-                                  type == "escala" ? ButtonOptions("Visualizar escalas", escalasRoute, context) : type == "veiculo" ? ButtonOptions("Visualizar veículos", veiculosRoute, context) : ButtonOptions("Visualizar voluntário", voluntariosRoute, context),
+                                  type == "escala" ? ButtonOptions("Visualizar escalas", scalesRoute, context) : type == "veiculo" ? ButtonOptions("Visualizar veículos", vehiclesRoute, context) : ButtonOptions("Visualizar voluntário", volunteersRoute, context),
                                 ],
                               ),
                             ],

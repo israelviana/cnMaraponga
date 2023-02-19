@@ -1,7 +1,7 @@
 
 import 'dart:convert';
 
-import 'package:app_transito/models/veiculos.dart';
+import 'package:app_transito/models/Vehicles.dart';
 import 'package:app_transito/services/ScalffoldMensage.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -11,14 +11,14 @@ import 'package:sqflite/sqflite.dart';
 import '../../core/AppImages.dart';
 import '../../database/db.dart';
 
-class CadastroVeiculos extends StatefulWidget{
-  const CadastroVeiculos({Key key}) : super(key: key);
+class RegisterVehicles extends StatefulWidget{
+  const RegisterVehicles({Key key}) : super(key: key);
 
 
-  State<CadastroVeiculos> createState() => _CadastroVeiculos();
+  State<RegisterVehicles> createState() => _RegisterVehicles();
 }
 
-class _CadastroVeiculos extends State<CadastroVeiculos>{
+class _RegisterVehicles extends State<RegisterVehicles>{
   final _formkey = GlobalKey<FormState>();
   final modeloController = TextEditingController(text: '');
   final corController = TextEditingController(text: '');

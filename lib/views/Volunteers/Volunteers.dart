@@ -1,66 +1,69 @@
-import 'dart:ffi';
+import 'dart:convert';
 
+import 'package:app_transito/models/Volunteers.dart';
 import 'package:app_transito/router.dart';
-import 'package:app_transito/views/Veiculos/Widgets/VeiculosList.dart';
+import 'package:app_transito/views/Volunteers/Widgets/VoluntariosList.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../components/inputForm.dart';
 import '../../database/db.dart';
-import '../../models/veiculos.dart';
 
 enum typeModal{
   modal
 }
 
-class Veiculos extends StatefulWidget {
-  const Veiculos({Key key}) : super(key: key);
+class Volunteers extends StatefulWidget {
+  const Volunteers({Key key}) : super(key: key);
 
   @override
-  State<Veiculos> createState() => _VeiculosState();
+  State<Volunteers> createState() => _VolunteersState();
 }
 
-class _VeiculosState extends State<Veiculos> {
-  Future requisitionVeiculo;
+class _VolunteersState extends State<Volunteers> {
 
-  List<Veiculo> listVeiculo = [];
+  List<Voluntario> listaVoluntarios = [];
 
-  final placaController = TextEditingController(text: '');
 
-  String placa;
+  Future requisitionVoluntario;
 
+
+  final cpfController = TextEditingController(text: '');
+
+  String cpf;
 
   @override
   void initState(){
-    _carregarVeiculos();
-    placaController.text = "";
+    _carregarVoluntarios();
+    cpfController.text = "";
   }
 
 
-  _carregarVeiculos() async{
+  _carregarVoluntarios() async{
     final database = await DB.instance.database;
 
-    List<Map<String, dynamic>> veiculos = await database.query('veiculos');
+    List<Map<String, dynamic>> voluntarios = await database.query('voluntarios');
 
     setState(() {
-      listVeiculo = veiculos.map((veiculo) => Veiculo(id: veiculo['id'], telefone: veiculo['telefone'], placa: veiculo['placa'], modelo: veiculo['modelo'], cor: veiculo['cor'], condutor: veiculo['condutor'])).toList();
-    });
-
-    database.close();
-
-  }
-
-  _buscarPlaca(String placa) async{
-    final database = await DB.instance.database;
-
-    List<Map<String, dynamic>> veiculos = await database.query('veiculos', where: '"placa" = ?', whereArgs: ['$placa']);
-
-    setState(() {
-      listVeiculo = veiculos.map((veiculo) => Veiculo(id: veiculo['id'] ,telefone: veiculo['telefone'], placa: veiculo['placa'], modelo: veiculo['modelo'], cor: veiculo['cor'], condutor: veiculo['condutor'])).toList();
+      listaVoluntarios = voluntarios.map((voluntario) => Voluntario(id: voluntario['id'], telefone: voluntario['telefone'], nome: voluntario['nome'], cpf: voluntario['cpf'])).toList();
     });
 
     database.close();
   }
+
+  _buscarCpf(String cpf) async{
+    final database = await DB.instance.database;
+
+    List<Map<String, dynamic>> voluntarios = await database.query('voluntarios',where: '"cpf" = ?', whereArgs: ['$cpf']);
+
+    setState(() {
+      listaVoluntarios = voluntarios.map((voluntario) => Voluntario(id: voluntario['id'], telefone: voluntario['telefone'], nome: voluntario['nome'], cpf: voluntario['cpf'])).toList();
+    });
+
+    database.close();
+  }
+
 
 
   @override
@@ -71,13 +74,12 @@ class _VeiculosState extends State<Veiculos> {
         body: RefreshIndicator(
           onRefresh: () => Future.delayed(Duration(milliseconds: 500), () => initState()),
           child: CustomScrollView(
-            slivers: <Widget>[
+            slivers: [
               SliverList(
                   delegate: SliverChildListDelegate([
                     Column(
                       children: [
-                        SizedBox(height: 20),
-                        Text("VEÍCULOS", style: TextStyle(
+                        Text("VOLUNTÁRIOS", style: TextStyle(
                             fontFamily: "OpensSans",
                             fontSize: 40,
                             color: Color(0xFFf0821e)
@@ -87,21 +89,21 @@ class _VeiculosState extends State<Veiculos> {
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Row(
                             children: [
-                              Flexible(child: InputForm(title: 'Digite a PLACA pelo qual deseja buscar', mask: "PLACA", type: "TEXT", controller: placaController)),
+                              Flexible(child: InputForm(title: 'Digite o CPF pelo qual deseja buscar', mask: "CPF", type: "TEXT", controller: cpfController,)),
                               InkWell(
                                 onTap: (){
-                                  placa = placaController.text;
-                                  if(placa == ""){
+                                  cpf = cpfController.text;
+                                  if(cpf == ""){
                                     initState();
                                   }else{
-                                    _buscarPlaca(placa);
+                                    _buscarCpf(cpf);
                                   }
                                 },
                                 child: Container(
                                   width: 30,
                                   height: 30,
                                   decoration: BoxDecoration(
-                                      color: Color(0xFFf0821e)
+                                    color: Color(0xFFf0821e)
                                   ),
                                   child: Icon(Icons.search),
                                 ),
@@ -109,10 +111,10 @@ class _VeiculosState extends State<Veiculos> {
                             ],
                           ),
                         ),
-                        listVeiculo.length == 0 ?
+                        listaVoluntarios.length == 0 ?
                             Padding(
                               padding: const EdgeInsets.only(top: 20),
-                              child: Center(child: Text("Não possui dados de veiculos!!!", style: TextStyle(
+                              child: Center(child: Text("Não possui dados de voluntários!", style: TextStyle(
                                   fontFamily: "OpensSans",
                                   fontSize: 20,
                                   color: Color(0xFFf0821e)
@@ -124,15 +126,13 @@ class _VeiculosState extends State<Veiculos> {
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
-                              itemCount: listVeiculo.length,
+                              itemCount: listaVoluntarios.length,
                               itemBuilder: (BuildContext context, int index){
-                                return VeiculosList(modelo: listVeiculo[index].modelo, cor: listVeiculo[index].cor, placa: listVeiculo[index].placa, condutor: listVeiculo[index].condutor, telefone: listVeiculo[index].telefone, funcao: () => _modal(typeModal.modal, listVeiculo[index].id.toString()));
-                              }
-                          ),
+                                return VoluntariosList(nome: listaVoluntarios[index].nome, cpf: listaVoluntarios[index].cpf, telefone: listaVoluntarios[index].telefone, function: () => _modal(typeModal.modal, listaVoluntarios[index].id.toString()));
+                          }),
                         )
-                      ],
-                    )
-                    ])
+                      ])
+            ])
               )
             ],
           ),
@@ -140,6 +140,8 @@ class _VeiculosState extends State<Veiculos> {
       ),
     );
   }
+
+
 
   Widget ContainerModalInitOne(BuildContext context, String titleInit) {
     return Container(
@@ -217,9 +219,9 @@ class _VeiculosState extends State<Veiculos> {
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  ButtonOptions("Excluir veiculo", () => _excluirVeiculo(id)),
+                                  ButtonOptions("Excluir voluntário", () => _excluirVoluntario(id)),
                                   SizedBox(height: 64),
-                                  ButtonOptions("Editar veiculo", () => Navigator.popAndPushNamed(context, edicaoVeiculoRoute, arguments: id)),
+                                  ButtonOptions("Editar voluntário", () => Navigator.popAndPushNamed(context, editVolunteersRoute, arguments: id)),
                                 ],
                               ),
                             ],
@@ -233,10 +235,10 @@ class _VeiculosState extends State<Veiculos> {
     );
   }
 
-  _excluirVeiculo(String id) async{
+  _excluirVoluntario(String id) async{
     final database = await openDatabase('cnMaraponga.db');
 
-    await database.delete('veiculos', where: '"id" = ?', whereArgs: ['$id']);
+    await database.delete('voluntarios', where: '"id" = ?', whereArgs: ['$id']);
 
     initState();
 
@@ -249,13 +251,12 @@ class _VeiculosState extends State<Veiculos> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Flexible(
-                child: Text("Veiculo excluido com sucesso!!"))
+                child: Text("Voluntário excluido com sucesso!"))
           ],
         ),
-        backgroundColor:  Color(0xFF4FBD2D),
+        backgroundColor: Color(0xFF4FBD2D),
       ),
     );
-
     database.close();
   }
 
@@ -290,4 +291,3 @@ class _VeiculosState extends State<Veiculos> {
   }
 
 }
-
