@@ -170,7 +170,7 @@ class _CadastroState extends State<Cadastro> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 13, bottom: 15),
-              child: _InputForm(cpfController, "CPF", "CPF"),
+              child: _InputForm(cpfController, "CPF", "CPF", ),
             ),
             SizedBox(height: 20),
             ButtonConfirmar("2"),
@@ -250,11 +250,11 @@ class _CadastroState extends State<Cadastro> {
             return null;
         }
       },
-      inputFormatters: [_MaskTextInputFormatter(title: title)],
+      inputFormatters: [_MaskTextInputFormatter(title: title, controller: controller)],
     );
   }
 
-  dynamic _MaskTextInputFormatter({title = ""}) {
+  dynamic _MaskTextInputFormatter({title = "",  controller}) {
     switch (title) {
       case "CPF":
         return MaskTextInputFormatter(
@@ -268,6 +268,10 @@ class _CadastroState extends State<Cadastro> {
             mask: '(##) #####-####',
             filter: {"#": RegExp(r'[0-9]')},
             type: MaskAutoCompletionType.lazy);
+      default:
+        return MaskTextInputFormatter(
+          initialText: controller.text.toUpperCase(),
+        );
     }
   }
 

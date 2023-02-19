@@ -34,7 +34,7 @@ class DB{
   }
 
   String get _Usuarios => '''
-  CREATE TABLE usuarios (
+  CREATE TABLE usuarios(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome VARCHAR(255),
     email VARCHAR(255),
@@ -47,7 +47,7 @@ class DB{
 
 
   String get _Veiculos => '''
-  CREATE TABLE veiculos (
+  CREATE TABLE veiculos(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     cor VARCHAR(255),
     placa VARCHAR(255),
@@ -58,7 +58,7 @@ class DB{
 ''';
 
   String get _Escalas => '''
-  CREATE TABLE escalas (
+  CREATE TABLE escalas(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome VARCHAR(255),
     data VARCHAR(255),
@@ -67,7 +67,7 @@ class DB{
 ''';
 
   String get _Voluntarios => '''
-  CREATE TABLE voluntarios (
+  CREATE TABLE voluntarios(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome VARCHAR(255),
     cpf VARCHAR(255),

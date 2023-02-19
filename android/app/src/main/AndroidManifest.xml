@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.app_transito">
+    package="com.app_transito">
    <application
         android:label="CnMaraponga"
         android:name="${applicationName}"
