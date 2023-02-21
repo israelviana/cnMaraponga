@@ -23,128 +23,132 @@ class VeiculosList extends StatelessWidget {
         child: Container(
             constraints: BoxConstraints(
               minWidth: 358,
-              minHeight: size.height * 0.15,
+              minHeight: size.height * 0.18,
             ),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: Colors.white),
             child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(height: 16),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(color: Colors.black),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Modelo: ',
-                                style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700
-                                )
-                            ),
-                            TextSpan(
-                              text: modelo,
-                              style: TextStyle(
-                                  fontFamily: "OpensSans",
-                                  fontSize: 14,
-                                  color: Color(0xFFf0821e)
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: size.height * 0.01),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(color: Colors.black),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Cor: ',
-                                style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700)),
-                            TextSpan(
-                              text: cor,
-                              style: TextStyle(
-                                  fontFamily: "OpensSans",
-                                  fontSize: 14,
-                                  color: Color(0xFFf0821e)),
-                            )],
-                        ),
-                      ),
-                      SizedBox(height: size.height * 0.01),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(color: Colors.black),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Placa: ',
-                                style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700)),
-                            TextSpan(
-                              text: placa,
-                              style: TextStyle(
-                                  fontFamily: "OpensSans",
-                                  fontSize: 14,
-                                  color: Color(0xFFf0821e)),
-                            )],
-                        ),
-                      ),
-                      SizedBox(height: size.height * 0.01),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(color: Colors.black),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Condutor: ',
-                                style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700)),
-                            TextSpan(
-                              text: condutor,
-                              style: TextStyle(
-                                  fontFamily: "OpensSans",
-                                  fontSize: 14,
-                                  color: Color(0xFFf0821e)),
-                            )],
-                        ),
-                      ),
-                      SizedBox(height: size.height * 0.01),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(color: Colors.black),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Telefone: ',
-                                style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700)),
-                            TextSpan(
-                              text: telefone,
-                              style: TextStyle(
-                                  fontFamily: "OpensSans",
-                                  fontSize: 14,
-                                  color: Color(0xFFf0821e)),
-                            )],
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          IconButton(onPressed: (){
-                            funcao();
-                          }, icon: Icon(Icons.create_outlined)),
-                        ],
-                      )
-                    ]))));
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(color: Colors.black),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: 'Modelo: ',
+                                    style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700
+                                    )
+                                ),
+                                TextSpan(
+                                  text: modelo,
+                                  style: TextStyle(
+                                      fontFamily: "OpensSans",
+                                      fontSize: 14,
+                                      color: Color(0xFFf0821e)
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: size.height * 0.01),
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(color: Colors.black),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: 'Cor: ',
+                                    style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700)),
+                                TextSpan(
+                                  text: cor,
+                                  style: TextStyle(
+                                      fontFamily: "OpensSans",
+                                      fontSize: 14,
+                                      color: Color(0xFFf0821e)),
+                                )],
+                            ),
+                          ),
+                          SizedBox(height: size.height * 0.01),
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(color: Colors.black),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: 'Placa: ',
+                                    style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700)),
+                                TextSpan(
+                                  text: placa,
+                                  style: TextStyle(
+                                      fontFamily: "OpensSans",
+                                      fontSize: 14,
+                                      color: Color(0xFFf0821e)),
+                                )],
+                            ),
+                          ),
+                          SizedBox(height: size.height * 0.01),
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(color: Colors.black),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: 'Condutor: ',
+                                    style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700)),
+                                TextSpan(
+                                  text: condutor,
+                                  style: TextStyle(
+                                      fontFamily: "OpensSans",
+                                      fontSize: 14,
+                                      color: Color(0xFFf0821e)),
+                                )],
+                            ),
+                          ),
+                          SizedBox(height: size.height * 0.01),
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(color: Colors.black),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: 'Telefone: ',
+                                    style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700)),
+                                TextSpan(
+                                  text: telefone,
+                                  style: TextStyle(
+                                      fontFamily: "OpensSans",
+                                      fontSize: 14,
+                                      color: Color(0xFFf0821e)),
+                                )],
+                            ),
+                          ),
+                        ]),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(onPressed: (){
+                          funcao();
+                        }, icon: Icon(Icons.create_outlined)),
+                      ],
+                    )
+                  ],
+                ))));
   }
 }

@@ -20,89 +20,93 @@ class EscalasListWidget extends StatelessWidget {
         child: Container(
             constraints: BoxConstraints(
               minWidth: 358,
-              minHeight: size.height * 0.15,
+              minHeight: size.height * 0.13,
             ),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: Colors.white),
             child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(height: 16),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(color: Colors.black),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Voluntário: ',
-                                style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700
-                                )
-                            ),
-                            TextSpan(
-                                text: voluntario,
-                              style: TextStyle(
-                                fontFamily: "OpensSans",
-                                fontSize: 14,
-                                color: Color(0xFFf0821e)
-                            ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: size.height * 0.01),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(color: Colors.black),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Data: ',
-                                style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700)),
-                            TextSpan(
-                                text: data,
-                                style: TextStyle(
-                                    fontFamily: "OpensSans",
-                                    fontSize: 14,
-                                    color: Color(0xFFf0821e)),
-                            )],
-                        ),
-                      ),
-                      SizedBox(height: size.height * 0.01),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(color: Colors.black),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Hora: ',
-                                style: TextStyle(
-                                    fontFamily: "Roboto",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700)),
-                            TextSpan(
-                                text: hora,
-                                style: TextStyle(
-                                    fontFamily: "OpensSans",
-                                    fontSize: 14,
-                                    color: Color(0xFFf0821e)),
-                            )],
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          IconButton(onPressed: (){
-                            function();
-                          }, icon: Icon(Icons.create_outlined)),
-                        ],
-                      )
-                    ])
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(color: Colors.black),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: 'Voluntário: ',
+                                    style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700
+                                    )
+                                ),
+                                TextSpan(
+                                    text: voluntario,
+                                  style: TextStyle(
+                                    fontFamily: "OpensSans",
+                                    fontSize: 14,
+                                    color: Color(0xFFf0821e)
+                                ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: size.height * 0.01),
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(color: Colors.black),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: 'Data: ',
+                                    style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700)),
+                                TextSpan(
+                                    text: data,
+                                    style: TextStyle(
+                                        fontFamily: "OpensSans",
+                                        fontSize: 14,
+                                        color: Color(0xFFf0821e)),
+                                )],
+                            ),
+                          ),
+                          SizedBox(height: size.height * 0.01),
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(color: Colors.black),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: 'Hora: ',
+                                    style: TextStyle(
+                                        fontFamily: "Roboto",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700)),
+                                TextSpan(
+                                    text: hora,
+                                    style: TextStyle(
+                                        fontFamily: "OpensSans",
+                                        fontSize: 14,
+                                        color: Color(0xFFf0821e)),
+                                )],
+                            ),
+                          ),
+                        ]),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(onPressed: (){
+                          function();
+                        }, icon: Icon(Icons.create_outlined)),
+                      ],
+                    )
+                  ],
+                )
             )));
   }
 }

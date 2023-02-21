@@ -46,7 +46,7 @@ class _ScalesState extends State<Scales> {
 
   _buscarVoluntario(String nome) async{
     final database = await DB.instance.database;
-    List<Map<String, dynamic>> escalas = await database.query('escalas', where: '"nome" = ?', whereArgs: ['$nome']);
+    List<Map<String, dynamic>> escalas = await database.rawQuery('SELECT * FROM escalas WHERE nome LIKE "%$nome%"');
     setState(() {
       listEscala = escalas.map((escala) => Escala(id: escala['id'], voluntario:  escala['nome'], data: escala['data'], hora: escala['hora'])).toList();
     });

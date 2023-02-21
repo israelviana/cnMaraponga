@@ -79,6 +79,7 @@ class _VolunteersState extends State<Volunteers> {
                   delegate: SliverChildListDelegate([
                     Column(
                       children: [
+                        SizedBox(height: 20),
                         Text("VOLUNTÁRIOS", style: TextStyle(
                             fontFamily: "OpensSans",
                             fontSize: 40,
